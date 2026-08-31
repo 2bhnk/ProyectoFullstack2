@@ -1,2 +1,5 @@
 # ProyectoFullstack2
-hola
+División del proyecto:
+Kevin: CSS
+Tapia: JS
+William: HTML
