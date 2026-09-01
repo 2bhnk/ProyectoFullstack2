@@ -3,99 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda</title>
+    <title>Tienda - Contacto</title>
 
     <script src="ejemplos_js/string_y_templates.js" defer></script>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-
-
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-    <nav class="navbar navbar-expand-lg navbar-dark menu-morado">
-        <div class="container">
-            <a class="navbar-brand titulo-principal m-0" href="index.html">°‧𓆝 𓆟 Lo quieres, te lo vendo 𓆞 𓆝·｡</a>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark menu-morado">
+            <div class="container">
+                <a class="navbar-brand titulo-principal m-0" href="index.html">⋆｡‧˚ʚ MachanStore ɞ˚‧｡⋆</a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir Menu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir Menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-
-            <div class="collapse navbar-collapse" id="menu">
-                <ul class="navbar-nav ms-auto">
-
-                    <li class="nav-item"><a class="nav-link boton-menu" href="index.html">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link boton-menu" href="productos.html">Productos</a></li>
-                    <li class="nav-item"><a class="nav-link boton-menu" href="contacto.html">Contacto</a></li>
-                </ul>
+                <div class="collapse navbar-collapse" id="menu">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link boton-menu" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link boton-menu" href="productos.html">Productos</a></li>
+                        <li class="nav-item"><a class="nav-link boton-menu" href="contacto.html">Contacto</a></li>
+                        <li class="nav-item"><a class="nav-link boton-menu" href="carrito.html"> Carrito</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
     <main> 
         <section id="contacto">
-        <h2>⤷ Ponte en contacto con nosotros ˎˊ˗<h2>
-        <p>¿Buscas una figura en especifico? ¿Tienes dudas sobre tu envio? Entonces...<p>
-        <p>Escribenos ! El Ciber Equipo Pride te ayudará.</p>
-       <ul class="lista-contacto">
-                <li>
-                    <b>Correo Electrónico:</b> 
-                    <br>
-                    contacto@equipopride.cl
-                </li>
-                <li>
-                    <b>WhatsApp:</b> 
-                    <br>
-                    +56 9 1234 5678
-                </li>
-                <li>
-                    <b>Instagram:</b> 
-                    <br>
-                    @loquieres_telovendo
-                </li>
-                <li>
-                    <b>Horario de atención:</b> 
-                    <br>
-                    Lunes a Viernes de 10:00 a 19:00 hrs.
-                </li>
+            <h2>⤷ Ponte en contacto con nosotros ˎˊ˗</h2>
+            <p>¿Buscas una figura en especifico? ¿Tienes dudas sobre tu envio? Entonces...</p>
+            <p>Escribenos ! El Ciber Equipo Pride te ayudará.</p>
+            
+            <ul class="lista-contacto">
+                <li><b>Correo Electrónico:</b><br>contacto@equipopride.cl</li>
+                <li><b>WhatsApp:</b><br>+56 9 1234 5678</li>
+                <li><b>Instagram:</b><br>@loquieres_telovendo</li>
+                <li><b>Horario de atención:</b><br>Lunes a Viernes de 10:00 a 19:00 hrs.</li>
             </ul>
 
+            <h2>⤷ Mandanos tu informacion y te contactamos  ˎˊ˗</h2>
             
-            <h2>⤷ Mandanos tu informacion y te contactamos  ˎˊ˗<h2>
             <form id="formContacto" novalidate>
                 <div class="form-group">
                     <label for="nombre">Nombre Completo</label>
-                    <input type="text" id="nombre" autocomplete="name" placeholder="Javier Santiago Tapia Toledo">
+                    <!-- maxlength="100" -->
+                    <input type="text" id="nombre" autocomplete="name" placeholder="Javier Santiago Tapia Toledo" maxlength="100">
                     <small class="mensaje-error" id="errorNombre"></small>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Correo electrónico:</label>
-                    <input type="email" id="email" name="email" autocomplete="email" placeholder="usuario@correo.com">
+                    <!-- maxlength="100" -->
+                    <input type="email" id="email" name="email" autocomplete="email" placeholder="usuario@correo.com" maxlength="100">
                     <small class="mensaje-error" id="errorEmail"></small>
                 </div>
 
                 <div class="form-group">
-                    <label></label>
-                    <textarea id="mensaje" name="mensaje" rows="4" placeholder="Escribe al menos 10 caracteres..."></textarea>
+                    <label for="mensaje">Mensaje</label>
+                    <!-- maxlength="500" -->
+                    <textarea id="mensaje" name="mensaje" rows="4" placeholder="Escribe al menos 10 caracteres..." maxlength="500"></textarea>
                     <small class="mensaje-error" id="errorMensaje"></small>
                 </div>
 
                 <button type="submit">Enviar Consulta</button>
                 <div id="mensajeExito" class="mensaje-exito"></div>
-            <form>
-    <main>
+            </form>
+        </section>
+    </main>
+
     <footer> 
-        <h3>  𐙚 ̊Ciber Equipo Pride 2026: </h3>
+        <h3> 𐙚 ̊Ciber Equipo Pride 2026: </h3>
         <p> Kevin Perez </p>
         <p> Benjamin Tapia </p>
         <p> William Zamorano </p>
     </footer>
     
     <script src="js/validaciones.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-
 </html>
