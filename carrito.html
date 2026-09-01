@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda - Mi Carrito</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark menu-morado">
+            <div class="container">
+                <a class="navbar-brand titulo-principal m-0" href="index.html">⋆｡‧˚ʚ MachanStore ɞ˚‧｡⋆</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir Menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="menu">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link boton-menu" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link boton-menu" href="productos.html">Productos</a></li>
+                        <li class="nav-item"><a class="nav-link boton-menu" href="contacto.html">Contacto</a></li>
+                        <li class="nav-item"><a class="nav-link boton-menu" href="carrito.html">🛒 Carrito</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container my-5 text-start">
+        <h2 class="mb-4 text-center">⤷ ゛Mi carrito de compras ˎˊ˗</h2>
+        
+        <div class="row">
+            
+            <div class="col-lg-8">
+                <!-- modificar con js -->
+                <div id="lista-carrito" class="d-flex flex-column gap-3">
+                    
+                    <p class="text-center text-muted mt-4">Tu carrito está vacío.</p>
+                </div>
+            </div>
+
+            
+            <div class="col-lg-4 mt-4 mt-lg-0">
+                <div class="card shadow-sm border-secondary">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="m-0">TOTAL:</h4>
+                            <!-- actualizar con js -->
+                            <h4 class="m-0 text-success fw-bold" id="total-carrito">$ 0</h4>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="cupon" class="form-label small text-muted">Ingresa un cupón de descuento</label>
+                            <div class="input-group">
+                                <input type="text" id="cupon" class="form-control" placeholder="Ej: PRIDE2026">
+                                <button class="btn btn-outline-secondary" type="button">Aplicar</button>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success w-100 fw-bold py-2">PAGAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer> 
+        <h3> 𐙚 ̊Ciber Equipo Pride 2026: </h3>
+        <p> Kevin Perez </p>
+        <p> Benjamin Tapia </p>
+        <p> William Zamorano </p>
+    </footer>
+
+    <!-- Script de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    
+    <!-- crear js de carrito -->
+    <script src="js/carrito.js"></script>
+</body>
+</html>
