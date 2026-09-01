@@ -1,0 +1,114 @@
+body {
+    background-color: #FFFFED;
+    text-align: center;
+    margin: 0;
+}
+
+nav {
+    background-color: #3D3454; 
+    color: #ffffff;                    
+    padding: 20px;         
+    text-align: center;            
+}
+
+.titulo-principal {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 40px;
+    color: #ffffff;
+    margin-bottom: 30px;
+    font-style: italic; 
+}
+
+header nav a {
+    display: inline-block; 
+    background-color: #5b4b7a; 
+    color: #ffffff;
+    padding: 10px 20px;
+    margin: 0 10px;
+    text-decoration: none; 
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background-color 0.3s; 
+}
+
+header nav a:hover {
+    background-color: #74619b; 
+}
+
+.texto-nosotros {
+    font-size: 18px; 
+    font-family: Arial, Helvetica, sans-serif; 
+    line-height: 1.6; 
+    padding: 15px; /* <--- Ajustado para que el texto respire mejor */
+}
+
+.tarjeta-producto {
+   border: 3px groove gray;
+    max-width: 400px; 
+    padding: 20px;
+    margin: 0 auto 20px auto; 
+    background-color: white;
+}
+
+.tarjeta-producto img {
+    margin: 0 auto; 
+    display: block; 
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #3D3454;
+    color: #ffffff;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.lista-contacto {
+    list-style-type: none; 
+    padding: 0;
+    max-width: 400px;
+    margin: 30px auto;
+    background-color: white;
+    border: 3px groove gray;
+    border-radius: 10px;
+}
+
+.lista-contacto li {
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0; 
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #2c3e50;
+}
+
+.lista-contacto li:last-child {
+    border-bottom: none;
+}
+
+/* Mensajes de error ocultos por defecto */
+.mensaje-error {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  display: none; /* No ocupa espacio hasta que haya error */
+  margin-top: 4px;
+}
+
+/* Mensaje de éxito oculto inicialmente */
+.mensaje-exito {
+  display: none;
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: 6px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Borde rojo cuando el campo no es válido */
+.input-invalido {
+  border: 2px solid #e74c3c !important;
+  outline: none;}
+
