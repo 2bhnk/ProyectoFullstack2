@@ -1,169 +1,355 @@
-// js/carrito.js
-const STORAGE_KEY = 'carrito_tienda';
+/**
+ * js/carrito.js
+ * Gestión de compras, cálculo de cupones de descuento y persistencia
+ */
+
+const CLAVE_CARRITO = 'carrito_tienda';
+const CLAVE_CUPON = 'cupon_activo_tienda';
 
 // --- UTILIDADES DE LOCALSTORAGE ---
-const obtenerCarrito = () => JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-const guardarCarrito = (carrito) => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(carrito));
-  actualizarContador();
+const obtenerCarrito = () => {
+    try {
+        return JSON.parse(localStorage.getItem(CLAVE_CARRITO)) || [];
+    } catch (error) {
+        console.error('Error al leer carrito:', error);
+        return [];
+    }
 };
 
-const formatearMoneda = (monto) => {
-  return new Intl.NumberFormat('es-CL', {
-    style: 'currency',
-    currency: 'CLP'
-  }).format(monto);
+const guardarCarrito = (carrito) => {
+    localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+    actualizarContadorBadge();
+};
+
+const obtenerCuponActivo = () => {
+    try {
+        return JSON.parse(localStorage.getItem(CLAVE_CUPON)) || null;
+    } catch (error) {
+        return null;
+    }
+};
+
+const guardarCuponActivo = (cupon) => {
+    localStorage.setItem(CLAVE_CUPON, JSON.stringify(cupon));
+};
+
+const removerCuponActivo = () => {
+    localStorage.removeItem(CLAVE_CUPON);
+};
+
+const formatearPesosChilenos = (valor) => {
+    return new Intl.NumberFormat('es-CL', {
+        style: 'currency',
+        currency: 'CLP',
+        minimumFractionDigits: 0
+    }).format(valor);
+};
+
+// --- CONTADOR EN NAVBAR ---
+const actualizarContadorBadge = () => {
+    const badges = document.querySelectorAll('#carrito-contador');
+    const carrito = obtenerCarrito();
+    const totalItems = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+
+    badges.forEach(badge => {
+        badge.textContent = totalItems;
+    });
 };
 
 // --- AGREGAR PRODUCTO (productos.html) ---
-const agregarProducto = (e) => {
-  const boton = e.target.closest('.btn-agregar');
-  if (!boton) return;
+const agregarAlCarrito = (boton) => {
+    const id = boton.dataset.id;
+    const nombre = boton.dataset.nombre;
+    const precio = parseInt(boton.dataset.precio, 10);
+    const imagen = boton.dataset.imagen;
 
-  const id = boton.dataset.id;
-  const nombre = boton.dataset.nombre;
-  const precio = parseInt(boton.dataset.precio, 10);
-  const imagen = boton.dataset.imagen;
+    if (!id || isNaN(precio)) return;
 
-  const carrito = obtenerCarrito();
-  const productoExistente = carrito.find(item => item.id === id);
-
-  if (productoExistente) {
-    productoExistente.cantidad += 1;
-  } else {
-    carrito.push({ id, nombre, precio, imagen, cantidad: 1 });
-  }
-
-  guardarCarrito(carrito);
-
-  // Feedback mínimo sin alterar el layout
-  const textoOriginal = boton.textContent;
-  boton.textContent = '¡Agregado! ✓';
-  boton.disabled = true;
-  setTimeout(() => {
-    boton.textContent = textoOriginal;
-    boton.disabled = false;
-  }, 1000);
-};
-
-// --- CONTADOR DEL NAVBAR ---
-const actualizarContador = () => {
-  const badge = document.getElementById('carrito-contador');
-  if (badge) {
     const carrito = obtenerCarrito();
-    const totalArticulos = carrito.reduce((acc, item) => acc + item.cantidad, 0);
-    badge.textContent = totalArticulos;
-  }
-};
+    const itemExistente = carrito.find(item => item.id === id);
 
-// --- GESTIÓN DE CANTIDADES (carrito.html) ---
-const modificarCantidad = (id, delta) => {
-  let carrito = obtenerCarrito();
-  const producto = carrito.find(item => item.id === id);
-
-  if (producto) {
-    producto.cantidad += delta;
-    if (producto.cantidad <= 0) {
-      carrito = carrito.filter(item => item.id !== id);
+    if (itemExistente) {
+        itemExistente.cantidad += 1;
+    } else {
+        carrito.push({ id, nombre, precio, imagen, cantidad: 1 });
     }
-  }
 
-  guardarCarrito(carrito);
-  renderizarCarrito();
+    guardarCarrito(carrito);
+
+    // Feedback visual en el botón
+    const textoOriginal = boton.textContent;
+    boton.textContent = '¡Añadido! ✓';
+    boton.classList.add('opacity-75');
+    boton.disabled = true;
+
+    setTimeout(() => {
+        boton.textContent = textoOriginal;
+        boton.classList.remove('opacity-75');
+        boton.disabled = false;
+    }, 900);
 };
 
-const eliminarProducto = (id) => {
-  const carrito = obtenerCarrito().filter(item => item.id !== id);
-  guardarCarrito(carrito);
-  renderizarCarrito();
-};
+// --- GESTIÓN DE CANTIDADES Y ELIMINACIÓN ---
+const alterarCantidad = (id, delta) => {
+    let carrito = obtenerCarrito();
+    const producto = carrito.find(item => item.id === id);
 
-const vaciarCarrito = () => {
-  localStorage.removeItem(STORAGE_KEY);
-  actualizarContador();
-  renderizarCarrito();
-};
-
-// --- DIBUJAR EN EL DOM (carrito.html) ---
-const renderizarCarrito = () => {
-  const contenedor = document.getElementById('carrito-items');
-  const elementoTotal = document.getElementById('carrito-total');
-  const btnVaciar = document.getElementById('btn-vaciar');
-
-  if (!contenedor) return; // Si no estamos en carrito.html, salimos
-
-  const carrito = obtenerCarrito();
-  contenedor.innerHTML = '';
-
-  if (carrito.length === 0) {
-    contenedor.innerHTML = `
-      <tr>
-        <td colspan="5" class="text-center py-4">Tu carrito está vacío.</td>
-      </tr>`;
-    if (elementoTotal) elementoTotal.textContent = formatearMoneda(0);
-    if (btnVaciar) btnVaciar.disabled = true;
-    return;
-  }
-
-  if (btnVaciar) btnVaciar.disabled = false;
-
-  let sumaTotal = 0;
-
-  carrito.forEach(prod => {
-    const subtotal = prod.precio * prod.cantidad;
-    sumaTotal += subtotal;
-
-    const fila = document.createElement('tr');
-    fila.innerHTML = `
-      <td class="align-middle">
-        <img src="${prod.imagen}" alt="${prod.nombre}" style="width: 50px; height: 50px; object-fit: cover;" class="me-2 rounded">
-        <span>${prod.nombre}</span>
-      </td>
-      <td class="align-middle">${formatearMoneda(prod.precio)}</td>
-      <td class="align-middle">
-        <button class="btn btn-sm btn-outline-secondary btn-restar" data-id="${prod.id}">-</button>
-        <span class="mx-2 fw-bold">${prod.cantidad}</span>
-        <button class="btn btn-sm btn-outline-secondary btn-sumar" data-id="${prod.id}">+</button>
-      </td>
-      <td class="align-middle fw-bold">${formatearMoneda(subtotal)}</td>
-      <td class="align-middle">
-        <button class="btn btn-sm btn-danger btn-eliminar" data-id="${prod.id}">✕</button>
-      </td>
-    `;
-    contenedor.appendChild(fila);
-  });
-
-  if (elementoTotal) {
-    elementoTotal.textContent = formatearMoneda(sumaTotal);
-  }
-};
-
-// --- INICIALIZACIÓN DE EVENTOS ---
-document.addEventListener('DOMContentLoaded', () => {
-  actualizarContador();
-
-  // Escucha para botones de catálogo
-  document.addEventListener('click', (e) => {
-    if (e.target.closest('.btn-agregar')) {
-      agregarProducto(e);
+    if (producto) {
+        producto.cantidad += delta;
+        if (producto.cantidad <= 0) {
+            carrito = carrito.filter(item => item.id !== id);
+        }
     }
-  });
 
-  // Delegación de eventos para la tabla del carrito
-  const contenedor = document.getElementById('carrito-items');
-  if (contenedor) {
-    renderizarCarrito();
+    guardarCarrito(carrito);
+    dibujarTablaCarrito();
+};
 
-    contenedor.addEventListener('click', (e) => {
-      const target = e.target;
-      const id = target.dataset.id;
-      if (target.classList.contains('btn-sumar')) modificarCantidad(id, 1);
-      if (target.classList.contains('btn-restar')) modificarCantidad(id, -1);
-      if (target.classList.contains('btn-eliminar')) eliminarProducto(id);
+const borrarArticulo = (id) => {
+    const carrito = obtenerCarrito().filter(item => item.id !== id);
+    guardarCarrito(carrito);
+    dibujarTablaCarrito();
+};
+
+const vaciarTodoElCarrito = () => {
+    localStorage.removeItem(CLAVE_CARRITO);
+    removerCuponActivo();
+    actualizarContadorBadge();
+    dibujarTablaCarrito();
+};
+
+// --- VALIDACIÓN Y APLICACIÓN DE CUPONES (IE1.2.1) ---
+const procesarCodigoDescuento = () => {
+    const inputCupon = document.getElementById('input-cupon');
+    const mensajeCupon = document.getElementById('mensaje-cupon');
+    const carrito = obtenerCarrito();
+
+    if (!inputCupon || !mensajeCupon) return;
+
+    const valor = inputCupon.value.trim();
+
+    // Validar si el carrito tiene productos
+    if (carrito.length === 0) {
+        mensajeCupon.textContent = 'Agrega productos al carrito antes de aplicar un descuento.';
+        mensajeCupon.className = 'small mt-2 text-danger fw-semibold d-block';
+        return;
+    }
+
+    if (!valor) {
+        mensajeCupon.textContent = 'Por favor ingresa un código o correo válido (ej: DUOC20).';
+        mensajeCupon.className = 'small mt-2 text-danger fw-semibold d-block';
+        return;
+    }
+
+    const valorMayus = valor.toUpperCase();
+    const regexDuocEmail = /^[^\s@]+@(duocuc\.cl|profesor\.duoc\.cl)$/i;
+
+    let cuponAplicado = null;
+
+    // Caso 1: Código oficial Duoc UC (20%) o Correo Institucional
+    if (valorMayus === 'DUOC20' || valorMayus === 'DUOCUC' || regexDuocEmail.test(valor)) {
+        cuponAplicado = {
+            codigo: regexDuocEmail.test(valor) ? 'Convenio Duoc UC' : valorMayus,
+            porcentaje: 0.20,
+            descripcion: '20% Descuento Duoc UC'
+        };
+        mensajeCupon.textContent = '¡Descuento institucional del 20% aplicado con éxito!';
+        mensajeCupon.className = 'small mt-2 text-success fw-semibold d-block';
+    } 
+    // Caso 2: Cupón fidelización Ciber Equipo Pride (10%)
+    else if (valorMayus === 'PRIDE10' || valorMayus === 'PRIDE') {
+        cuponAplicado = {
+            codigo: 'PRIDE10',
+            porcentaje: 0.10,
+            descripcion: '10% Descuento Equipo Pride'
+        };
+        mensajeCupon.textContent = '¡Cupón Pride aplicado! Disfrutas de un 10% de descuento.';
+        mensajeCupon.className = 'small mt-2 text-success fw-semibold d-block';
+    } 
+    // Caso 3: Código inválido
+    else {
+        mensajeCupon.textContent = 'Código o correo no válido. Prueba con DUOC20 o tu correo @duocuc.cl.';
+        mensajeCupon.className = 'small mt-2 text-danger fw-semibold d-block';
+        return;
+    }
+
+    guardarCuponActivo(cuponAplicado);
+    inputCupon.value = '';
+    dibujarTablaCarrito();
+};
+
+const eliminarCupon = () => {
+    removerCuponActivo();
+    const mensajeCupon = document.getElementById('mensaje-cupon');
+    if (mensajeCupon) {
+        mensajeCupon.textContent = 'Cupón eliminado.';
+        mensajeCupon.className = 'small mt-2 text-secondary d-block';
+        setTimeout(() => { mensajeCupon.style.display = 'none'; }, 2000);
+    }
+    dibujarTablaCarrito();
+};
+
+// --- RENDERIZADO DEL CARRITO Y TOTALES ---
+const dibujarTablaCarrito = () => {
+    const contenedor = document.getElementById('carrito-items');
+    const elementoSubtotal = document.getElementById('carrito-subtotal');
+    const elementoTotal = document.getElementById('carrito-total');
+    const elementoDescuento = document.getElementById('carrito-descuento');
+    const etiquetaCupon = document.getElementById('etiqueta-cupon');
+    const filaDescuento = document.getElementById('fila-descuento');
+    const btnVaciar = document.getElementById('btn-vaciar');
+    const btnFinalizar = document.getElementById('btn-finalizar');
+    const btnAplicarCupon = document.getElementById('btn-aplicar-cupon');
+    const inputCupon = document.getElementById('input-cupon');
+    const alertaCompra = document.getElementById('alerta-compra');
+
+    if (!contenedor) return;
+
+    const carrito = obtenerCarrito();
+    contenedor.innerHTML = '';
+
+    if (alertaCompra && !alertaCompra.classList.contains('d-none')) {
+        alertaCompra.classList.add('d-none');
+    }
+
+    if (carrito.length === 0) {
+        removerCuponActivo();
+        contenedor.innerHTML = `
+            <tr>
+                <td colspan="5" class="text-center py-5 text-muted">
+                    <p class="fs-5 mb-2">Tu carrito está vacío.</p>
+                    <a href="productos.html" class="btn btn-sm text-white" style="background-color: #5b4b7a;">Explorar figuras</a>
+                </td>
+            </tr>
+        `;
+        if (elementoSubtotal) elementoSubtotal.textContent = formatearPesosChilenos(0);
+        if (elementoTotal) elementoTotal.textContent = formatearPesosChilenos(0);
+        if (filaDescuento) filaDescuento.classList.add('d-none');
+        if (btnVaciar) btnVaciar.disabled = true;
+        if (btnFinalizar) btnFinalizar.disabled = true;
+        if (btnAplicarCupon) btnAplicarCupon.disabled = true;
+        if (inputCupon) inputCupon.disabled = true;
+        return;
+    }
+
+    if (btnVaciar) btnVaciar.disabled = false;
+    if (btnFinalizar) btnFinalizar.disabled = false;
+    if (btnAplicarCupon) btnAplicarCupon.disabled = false;
+    if (inputCupon) inputCupon.disabled = false;
+
+    let subtotal = 0;
+
+    carrito.forEach(prod => {
+        const totalFila = prod.precio * prod.cantidad;
+        subtotal += totalFila;
+
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+            <td class="align-middle">
+                <div class="d-flex align-items-center">
+                    <!-- AQUÍ VA LA CLASE NUEVA: -->
+                    <img src="${prod.imagen}" alt="${prod.nombre}" class="img-carrito-figura me-3 rounded border p-1">
+                    <span class="fw-semibold">${prod.nombre}</span>
+                </div>
+            </td>
+            <td class="text-center align-middle">${formatearPesosChilenos(prod.precio)}</td>
+            <td class="text-center align-middle">
+                <div class="btn-group border rounded" role="group">
+                    <button type="button" class="btn btn-light btn-sm btn-decrementar px-2" data-id="${prod.id}">−</button>
+                    <span class="px-3 py-1 fw-bold bg-white">${prod.cantidad}</span>
+                    <button type="button" class="btn btn-light btn-sm btn-incrementar px-2" data-id="${prod.id}">+</button>
+                </div>
+            </td>
+            <td class="text-center align-middle fw-bold">${formatearPesosChilenos(totalFila)}</td>
+            <td class="text-center align-middle">
+                <button type="button" class="btn btn-outline-danger btn-sm btn-eliminar" data-id="${prod.id}">✕</button>
+            </td>
+        `;
+        contenedor.appendChild(fila);
     });
 
-    const btnVaciar = document.getElementById('btn-vaciar');
-    if (btnVaciar) btnVaciar.addEventListener('click', vaciarCarrito);
-  }
+    // Cálculos con Descuento
+    const cupon = obtenerCuponActivo();
+    let montoDescuento = 0;
+
+    if (cupon && cupon.porcentaje > 0) {
+        montoDescuento = Math.round(subtotal * cupon.porcentaje);
+        if (filaDescuento) {
+            filaDescuento.classList.remove('d-none');
+            etiquetaCupon.textContent = `${cupon.codigo} -${cupon.porcentaje * 100}%`;
+            elementoDescuento.textContent = `-${formatearPesosChilenos(montoDescuento)}`;
+        }
+    } else {
+        if (filaDescuento) filaDescuento.classList.add('d-none');
+    }
+
+    const totalFinal = subtotal - montoDescuento;
+
+    if (elementoSubtotal) elementoSubtotal.textContent = formatearPesosChilenos(subtotal);
+    if (elementoTotal) elementoTotal.textContent = formatearPesosChilenos(totalFinal);
+};
+
+// --- SIMULACIÓN DE FINALIZACIÓN DE COMPRA ---
+const procesarCompra = () => {
+    const alertaCompra = document.getElementById('alerta-compra');
+    const carrito = obtenerCarrito();
+
+    if (carrito.length === 0) return;
+
+    vaciarTodoElCarrito();
+
+    if (alertaCompra) {
+        alertaCompra.classList.remove('d-none');
+    }
+};
+
+// --- INICIALIZACIÓN Y EVENTOS ---
+document.addEventListener('DOMContentLoaded', () => {
+    actualizarContadorBadge();
+
+    // Evento para botones de agregar (catálogo)
+    document.addEventListener('click', (e) => {
+        const botonAgregar = e.target.closest('.btn-agregar');
+        if (botonAgregar) agregarAlCarrito(botonAgregar);
+    });
+
+    // Eventos dentro de carrito.html
+    const contenedorCarrito = document.getElementById('carrito-items');
+    if (contenedorCarrito) {
+        dibujarTablaCarrito();
+
+        contenedorCarrito.addEventListener('click', (e) => {
+            const btnInc = e.target.closest('.btn-incrementar');
+            const btnDec = e.target.closest('.btn-decrementar');
+            const btnEli = e.target.closest('.btn-eliminar');
+
+            if (btnInc) alterarCantidad(btnInc.dataset.id, 1);
+            if (btnDec) alterarCantidad(btnDec.dataset.id, -1);
+            if (btnEli) borrarArticulo(btnEli.dataset.id);
+        });
+
+        // Botones de acción
+        const btnVaciar = document.getElementById('btn-vaciar');
+        if (btnVaciar) btnVaciar.addEventListener('click', vaciarTodoElCarrito);
+
+        const btnFinalizar = document.getElementById('btn-finalizar');
+        if (btnFinalizar) btnFinalizar.addEventListener('click', procesarCompra);
+
+        const btnAplicarCupon = document.getElementById('btn-aplicar-cupon');
+        if (btnAplicarCupon) btnAplicarCupon.addEventListener('click', procesarCodigoDescuento);
+
+        const btnQuitarCupon = document.getElementById('btn-quitar-cupon');
+        if (btnQuitarCupon) btnQuitarCupon.addEventListener('click', eliminarCupon);
+
+        // Permitir presionar Enter en el input de cupón
+        const inputCupon = document.getElementById('input-cupon');
+        if (inputCupon) {
+            inputCupon.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    procesarCodigoDescuento();
+                }
+            });
+        }
+    }
 });

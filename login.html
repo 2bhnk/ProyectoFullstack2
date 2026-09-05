@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <header> 
+    <header>
         <nav class="navbar navbar-expand-lg navbar-dark menu-morado">
             <div class="container">
                 <a class="navbar-brand titulo-principal m-0" href="index.html">⋆｡‧˚ʚ MachanStore ɞ˚‧｡⋆</a>
@@ -23,13 +23,18 @@
                         <li class="nav-item"><a class="nav-link boton-menu" href="index.html">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link boton-menu" href="productos.html">Productos</a></li>
                         <li class="nav-item"><a class="nav-link boton-menu" href="contacto.html">Contacto</a></li>
-                        <li class="nav-item"><a class="nav-link boton-menu" href="carrito.html">Carrito</a></li>
+                        <li class="nav-item">
+                        <a class="nav-link boton-menu active fw-bold" href="carrito.html">
+                            Carrito <span id="carrito-contador" class="badge rounded-pill bg-danger">0</span>
+                        </a>
+                    </li>
                         <li class="nav-item"><a class="nav-link boton-menu" href="login.html">Iniciar sesión</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+
     
     <main class="container my-5" style="max-width: 500px;">
         <h1 class="text-center mb-4">Iniciar sesión</h1>
@@ -59,7 +64,7 @@
         <p> Benjamin Tapia </p>
         <p> William Zamorano </p>
     </footer>
-
+    <script src="js/carrito.js"></script>
     <script src="js/login.js"></script>
 </body>
 </html>
