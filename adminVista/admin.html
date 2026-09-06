@@ -3,182 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - MachanStore</title>
-
-    <!-- ../ es para salir de la carpeta adminVista y encontrar los estilos -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>Panel Admin - MachanStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
-
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark menu-morado">
-            <div class="container">
-                <!-- Indicador que estamos en el Admin -->
-                <a class="navbar-brand titulo-principal m-0" href="../index.html">⋆｡‧˚ʚ MachanStore [ADMIN] ɞ˚‧｡⋆</a>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir Menu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="menu">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link boton-menu" href="../index.html">Ver Tienda</a></li>
-                        <li class="nav-item"><a class="nav-link boton-menu active fw-bold" href="#">Panel Control</a></li>
-                        <li class="nav-item"><a class="nav-link boton-menu text-danger" href="../login.html">Cerrar Sesión</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <main class="container my-5 flex-grow-1">
-        
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Panel de Control</h2>
-            <span class="badge bg-secondary fs-6">Administrador: MachanStore Team</span>
-        </div>
-
-        <!-- GESTIÓN DE STOCK -->
-        <section id="gestion-stock" class="mb-5">
-            <h4 class="mb-3 text-start" style="color: var(--morado);">.ೀ Gestión de Inventario</h4>
-            
-            <div class="table-responsive shadow-sm rounded border bg-white p-3">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th scope="col" style="width: 10%;">ID</th>
-                            <th scope="col" style="width: 50%;">Producto</th>
-                            <th scope="col" class="text-center">Stock Actual</th>
-                            <th scope="col" class="text-center">Modificar Stock</th>
-                            <th scope="col" class="text-center">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-lista-productos">
-                        <!-- Ejemplo estático de producto Umamusume -->
-                        <tr>
-                            <td class="fw-bold">#PROD-001</td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="../images/DaiwaNen.webp" alt="Daiwa" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;">
-                                    <span>Nendoroid Daiwa Scarlet (Umamusume)</span>
-                                </div>
-                            </td>
-                            <td class="text-center fw-semibold">12</td>
-                            <td>
-                                <input type="number" class="form-control text-center mx-auto" value="12" min="0" style="max-width: 100px;">
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm text-white" style="background-color: var(--morado);">Actualizar</button>
-                            </td>
-                        </tr>
-                        <!-- Ejemplo 2 -->
-                        <tr>
-                            <td class="fw-bold">#PROD-002</td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="../images/FiguraBourbon.webp" alt="Bourbon" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;">
-                                    <span>POP UP PARADE SP Mihono Bourbon</span>
-                                </div>
-                            </td>
-                            <td class="text-center fw-semibold text-danger">2</td>
-                            <td>
-                                <input type="number" class="form-control text-center mx-auto" value="2" min="0" style="max-width: 100px;">
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm text-white" style="background-color: var(--morado);">Actualizar</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- GESTIÓN DE PEDIDOS -->
-        <section id="gestion-pedidos">
-            <h4 class="mb-3 text-start" style="color: var(--morado);">𓏲𝄢 Pedidos Recientes</h4>
-            
-            <div class="table-responsive shadow-sm rounded border bg-white p-3">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th scope="col">Orden</th>
-                            <th scope="col">Cliente</th>
-                            <th scope="col">Fecha</th>
-                            <th scope="col" class="text-center">Total</th>
-                            <th scope="col" style="width: 25%;">Estado</th>
-                            <th scope="col" class="text-center">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-lista-pedidos">
-                        <!-- Orden 1 -->
-                        <tr>
-                            <td class="fw-bold">#ORD-5092</td>
-                            <td>Javier Santiago Tapia</td>
-                            <td>12/04/2026</td>
-                            <td class="text-center fw-semibold">$ 73.990</td>
-                            <td>
-                                <select class="form-select form-select-sm border-warning text-warning fw-bold">
-                                    <option value="pendiente" selected>Pendiente</option>
-                                    <option value="transito">En Tránsito</option>
-                                    <option value="entregado">Entregado</option>
-                                </select>
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-success">Guardar</button>
-                            </td>
-                        </tr>
-                        <!-- Orden 2 -->
-                        <tr>
-                            <td class="fw-bold">#ORD-5091</td>
-                            <td>Estudiante Duoc</td>
-                            <td>10/04/2026</td>
-                            <td class="text-center fw-semibold">$ 142.990</td>
-                            <td>
-                                <select class="form-select form-select-sm border-primary text-primary fw-bold">
-                                    <option value="pendiente">Pendiente</option>
-                                    <option value="transito" selected>En Tránsito</option>
-                                    <option value="entregado">Entregado</option>
-                                </select>
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-success">Guardar</button>
-                            </td>
-                        </tr>
-                        <!-- Orden 3 -->
-                        <tr>
-                            <td class="fw-bold">#ORD-5088</td>
-                            <td>Cliente Frecuente</td>
-                            <td>08/04/2026</td>
-                            <td class="text-center fw-semibold">$ 65.990</td>
-                            <td>
-                                <select class="form-select form-select-sm border-success text-success fw-bold">
-                                    <option value="pendiente">Pendiente</option>
-                                    <option value="transito">En Tránsito</option>
-                                    <option value="entregado" selected>Entregado</option>
-                                </select>
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-success">Guardar</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-    </main>
-
-    <footer> 
-        <h3> 𐙚 MachanStore Team 2026: </h3>
-        <p> Kevin Perez </p>
-        <p> Benjamin Tapia </p>
-        <p> William Zamorano </p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     
-    <!-- conectar js de admin -->
+    <!-- Bootstrap para el menú lateral -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+
+    <!-- Menú lateral + Contenido -->
+    <div class="d-flex" style="min-height: 100vh;">
+
+        <!-- (MENÚ LATERAL)-->
+        <aside class="bg-white border-end d-flex flex-column p-3" style="width: 250px;">
+            <a href="../index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none border-bottom pb-3 w-100">
+                <span class="fs-5 fw-bold">🪐 MachanStore</span>
+            </a>
+            
+            <ul class="nav nav-pills flex-column mb-auto mt-3" id="menu-admin">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active sidebar-link" style="background-color: var(--morado); color: white;">
+                        <i class="bi bi-grid me-2"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark sidebar-link">
+                        <i class="bi bi-people me-2"></i> Usuarios
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark sidebar-link">
+                        <i class="bi bi-box-seam me-2"></i> Productos
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark sidebar-link">
+                        <i class="bi bi-receipt me-2"></i> Pedidos
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <div class="dropdown">
+                <a href="../login.html" class="d-flex align-items-center link-dark text-decoration-none">
+                    <i class="bi bi-box-arrow-left me-2"></i>
+                    <strong>Cerrar sesión</strong>
+                </a>
+            </div>
+        </aside>
+
+
+        <!--ÁREA DE CONTENIDO-->
+        <main class="flex-grow-1 p-4 bg-light overflow-auto" style="height: 100vh;">
+            
+            <!-- icono de notificaciones -->
+            <div class="d-flex justify-content-end mb-4">
+                <i class="bi bi-bell-fill fs-4 text-muted"></i>
+            </div>
+
+            <!--DASHBOARD -->
+            <section id="vista-dashboard" class="vista-admin">
+                <h2 class="fw-bold mb-4">¡HOLA Administrador!</h2>
+                <div class="card shadow-sm border-0 rounded-3" style="min-height: 400px;">
+                    <div class="card-body">
+                        <!-- Espacio en blanco :P -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- LISTA DE USUARIOS -->
+            <!--Tiene d-none para estar oculta por defecto. -->
+            <section id="vista-usuarios" class="vista-admin d-none">
+                <div class="d-flex align-items-center mb-4 gap-4">
+                    <h2 class="fw-bold m-0">Usuarios</h2>
+                    <button class="btn btn-dark fw-bold rounded-1 px-4 py-2">NUEVO USUARIO</button>
+                </div>
+                
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body p-0">
+                        <table class="table table-hover align-middle m-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">Nombre Completo</th>
+                                    <th>Correo Electrónico</th>
+                                    <th>Rol</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="ps-4 fw-semibold">Admin 1</td>
+                                    <td>admin@machanstore.cl</td>
+                                    <td><span class="badge bg-primary">Admin</span></td>
+                                    <td class="text-center"><button class="btn btn-sm btn-outline-secondary">Editar</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4 fw-semibold">Cliente Prueba</td>
+                                    <td>cliente@gmail.com</td>
+                                    <td><span class="badge bg-secondary">Cliente</span></td>
+                                    <td class="text-center"><button class="btn btn-sm btn-outline-secondary">Editar</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NUEVO USUARIO -->
+            <section id="vista-nuevo-usuario" class="vista-admin d-none">
+                <h2 class="fw-bold mb-4">NUEVO USUARIO</h2>
+                
+                <div class="card shadow-sm border-secondary rounded-0 mx-auto" style="max-width: 800px;">
+                    <div class="card-header bg-secondary bg-opacity-25 border-bottom-0 py-3">
+                        <span class="fw-bold text-secondary" style="font-size: 0.9rem;">Registro de usuario</span>
+                    </div>
+                    <div class="card-body p-4 p-md-5">
+                        <form id="formAdminUsuario">
+                            <div class="mb-3">
+                                <label class="form-label text-muted small fw-bold mb-1">NOMBRE COMPLETO</label>
+                                <input type="text" class="form-control rounded-0 border-dark">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted small fw-bold mb-1">CORREO</label>
+                                <input type="email" class="form-control rounded-0 border-dark">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted small fw-bold mb-1">CONTRASEÑA</label>
+                                <input type="password" class="form-control rounded-0 border-dark">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted small fw-bold mb-1">CONFIRMAR CONTRASEÑA</label>
+                                <input type="password" class="form-control rounded-0 border-dark">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label text-muted small fw-bold mb-1">TELEFONO (opcional)</label>
+                                <input type="tel" class="form-control rounded-0 border-dark">
+                            </div>
+
+                            <div class="row mb-5">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <select class="form-select rounded-0 border-dark text-muted">
+                                        <option selected>-- Seleccione la región --</option>
+                                        <option value="1">Región Metropolitana</option>
+                                        <option value="2">Región de Valparaíso</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select rounded-0 border-dark text-muted">
+                                        <option selected>-- Seleccione la comuna --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-outline-dark fw-bold px-5 py-2 rounded-0">REGISTRAR</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRODUCTOS -->
+            <section id="vista-productos" class="vista-admin d-none">
+                <h2 class="fw-bold mb-4">Gestión de Productos</h2>
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body p-0">
+                        <table class="table table-hover align-middle m-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">ID</th>
+                                    <th>Producto</th>
+                                    <th class="text-center">Stock</th>
+                                    <th class="text-center">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="ps-4 fw-bold">#PROD-001</td>
+                                    <td>Nendoroid Daiwa Scarlet</td>
+                                    <td class="text-center">
+                                        <input type="number" class="form-control text-center mx-auto" value="12" style="max-width: 80px;">
+                                    </td>
+                                    <td class="text-center"><button class="btn btn-sm btn-dark">Actualizar</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PEDIDOS -->
+            <section id="vista-pedidos" class="vista-admin d-none">
+                <h2 class="fw-bold mb-4">Pedidos Recientes</h2>
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body p-0">
+                        <table class="table table-hover align-middle m-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">Orden</th>
+                                    <th>Cliente</th>
+                                    <th class="text-center">Total</th>
+                                    <th>Estado</th>
+                                    <th class="text-center">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="ps-4 fw-bold">#ORD-5092</td>
+                                    <td>Javier Santiago Tapia</td>
+                                    <td class="text-center fw-semibold">$73.990</td>
+                                    <td>
+                                        <select class="form-select form-select-sm border-warning text-warning fw-bold" style="max-width: 140px;">
+                                            <option value="pendiente" selected>Pendiente</option>
+                                            <option value="transito">En Tránsito</option>
+                                            <option value="entregado">Entregado</option>
+                                        </select>
+                                    </td>
+                                    <td class="text-center"><button class="btn btn-sm btn-dark">Guardar</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/admin.js"></script>
 </body>
 </html>
