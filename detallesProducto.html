@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Producto - MachanStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body> 
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark menu-morado">
+            <div class="container">
+                <a class="navbar-brand titulo-principal m-0" href="index.html">⋆｡‧˚ʚ MachanStore ɞ˚‧｡⋆</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir Menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menu">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link boton-menu" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link boton-menu active" href="productos.html">Productos</a></li>
+                        <li class="nav-item"><a class="nav-link boton-menu" href="contacto.html">Contacto</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link boton-menu fw-bold" href="carrito.html">
+                                Carrito <span id="carrito-contador" class="badge rounded-pill bg-danger">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link boton-menu" href="login.html">Iniciar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container my-5 text-start">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html" style="color: var(--morado);">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="productos.html" style="color: var(--morado);">Productos</a></li>
+                <li class="breadcrumb-item active" aria-current="page" id="bread-nombre-producto">Cargando producto...</li>
+            </ol>
+        </nav>
+
+        <section id="detalle-producto" class="row">
+            <!--  Imágenes -->
+            <div class="col-12 col-md-6 mb-4 mb-md-0">
+                <div class="border rounded p-3 bg-white shadow-sm mb-3">
+                    <img id="detalle-imagen-principal" src="" alt="Cargando..." class="img-fluid mx-auto d-block" style="max-height: 400px; object-fit: contain;">
+                </div>
+                <!-- Miniaturas -->
+                <div class="d-flex gap-2 justify-content-center">
+                    <div class="border rounded p-1 bg-white cursor-pointer"><img src="" alt="Miniatura 1" class="img-fluid" style="width: 60px; height: 60px;"></div>
+                    <div class="border rounded p-1 bg-white cursor-pointer"><img src="" alt="Miniatura 2" class="img-fluid" style="width: 60px; height: 60px;"></div>
+                    <div class="border rounded p-1 bg-white cursor-pointer"><img src="" alt="Miniatura 3" class="img-fluid" style="width: 60px; height: 60px;"></div>
+                </div>
+            </div>
+
+            <!-- Información -->
+            <div class="col-12 col-md-6 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h2 id="detalle-nombre" class="fw-bold" style="color: var(--morado-oscuro);">Cargando...</h2>
+                    <h2 id="detalle-precio" class="fw-bold text-success m-0">$ 0</h2>
+                </div>
+
+                <div class="mb-4">
+                    <p id="detalle-descripcion" class="text-muted" style="line-height: 1.6;">
+                        Cargando descripción del producto...
+                    </p>
+                </div>
+
+                <!-- Detalles técnicos y stock -->
+                <ul class="list-unstyled mb-4 p-3 bg-white border rounded shadow-sm">
+                    <li class="mb-2"><strong>Distribuidor Oficial:</strong> <span id="detalle-proveedor">Cargando...</span></li>
+                    <li class="mb-2"><strong>Categoría:</strong> <span id="detalle-categoria">Figuras a escala</span></li>
+                    <li><strong>Disponibilidad:</strong> <span id="detalle-stock" class="badge bg-success">En Stock</span></li>
+                </ul>
+
+                <!-- Formulario de compra -->
+                <div class="mt-auto p-3 bg-light border rounded">
+                    <div class="d-flex align-items-center gap-3">
+                        <label for="cantidad-producto" class="fw-bold mb-0">Cantidad:</label>
+                        <input type="number" id="cantidad-producto" class="form-control text-center" value="1" min="1" max="10" style="width: 80px;">
+                        <button id="btn-agregar-detalle" class="btn btn-primary flex-grow-1" style="background-color: var(--morado); border: none;">
+                            Añadir al carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-5">
+
+        <section id="productos-relacionados">
+            <h4 class="mb-4" style="color: var(--morado-oscuro);">Productos Relacionados</h4>
+            <!-- Contenedor js -->
+            <div id="contenedor-relacionados" class="row g-3">
+                <p class="text-muted">Cargando sugerencias...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer> 
+        <h3> 𐙚 MachanStore Team 2026: </h3>
+        <p> Kevin Perez </p>
+        <p> Benjamin Tapia </p>
+        <p> William Zamorano </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/detalle.js"></script>
+</body>
+</html>
