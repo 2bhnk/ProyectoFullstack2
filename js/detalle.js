@@ -26,7 +26,7 @@ const CATALOGO_DETALLE = [
         imagen: "images/FiguraBourbon.webp",
         distribuidor: "Good Smile Company",
         categoria: "POP UP PARADE SP",
-        descripcion: "Edición especial POP UP PARADE de la infatigable Mihono Bourbon. Destaca por su modelado dinámico, traje cibernético con acabados metálicos y pose firme que refleja su implacable disciplina de entrenamiento."
+        descripcion: "'Objetivo localizado. Comienza la Operación: Triple Corona'. \n\n ¡Ya está aquí una figura especial de POP UP PARADE! POP UP PARADE SP es una línea derivada de POP UP PARADE que va más allá de los límites de la colección habitual, ¡ofreciendo sorpresas especiales! \n Para esta edición POP UP PARADE SP, el exquisito diseño de Mihono Bourbon ha sido fielmente recreado en formato de figura.\n\n Producto completo de plástico pintado, sin escala, con base incluida. Altura aproximada de 250 mm."
     },
     {
         id: "pop-up-parade-daiwa-scarlet-l",
@@ -35,7 +35,7 @@ const CATALOGO_DETALLE = [
         imagen: "images/FiguraDaiwa.webp",
         distribuidor: "Good Smile Company",
         categoria: "POP UP PARADE (Tamaño L)",
-        descripcion: "Figura de gran escala (aproximadamente 24 cm) de Daiwa Scarlet luciendo el uniforme clásico de Tracen. Captura a la perfección su dinamismo, doble coleta al viento y carácter enérgico."
+        descripcion: "POP UP PARADE Daiwa Scarlet (Tamaño L): ¡con el mismo impacto que una figura a escala! \n Captura a la perfección su dinamismo, doble coleta al viento y carácter enérgico. \n\n Figura completa de plástico pintado, sin escala, con base incluida. Altura aproximada de 225 mm."
     },
     {
         id: "pop-up-parade-machan-costume",
@@ -44,7 +44,7 @@ const CATALOGO_DETALLE = [
         imagen: "images/FiguraMachanCostume.webp",
         distribuidor: "Good Smile Arts Shanghai",
         categoria: "Escala 1/7",
-        descripcion: "Aston Machan con su vestido de ensueño 'Unforgettable Sugar Candy'. Esculpida meticulosamente capturando los volantes de su falda, texturas finas de tela y una paleta de colores pasteles inolvidable."
+        descripcion: "'¡La dulce y esponjosa Machan, lista para apoyarte!'\n\n Del juego 'Umamusume: Pretty Derby' llega una figura de Aston Machan luciendo su atuendo del evento de San Valentín. \n ¡Como su nombre sugiere, la figura ha sido esculpida para parecer hecha de dulces! La sonrisa tímida de Aston Machan y la pura alegría de pasar un San Valentín perfecto junto a su Entrenador han sido plasmadas cuidadosamente en esta figura. \n ¡Asegúrate de añadirla a tu colección y disfrutad juntos de un momento dulce y maravilloso! \n\n Producto completo de plástico pintado a escala 1/7 con base incluida. Aproximadamente 230 mm de altura."
     },
     {
         id: "alter-tokai-teio-horizon",
@@ -53,7 +53,7 @@ const CATALOGO_DETALLE = [
         imagen: "images/FiguraTeioAlt.jpg",
         distribuidor: "ALTER",
         categoria: "Escala Premium 1/7",
-        descripcion: "Una obra maestra de ingeniería por la prestigiosa casa ALTER. Presenta a Tokai Teio saltando llena de vitalidad con su traje de carreras 'Beyond the Horizon', con pintura degradada y base con efectos translúcidos."
+        descripcion: "Una obra maestra de ingeniería por la prestigiosa casa ALTER. Presenta a Tokai Teio saltando llena de vitalidad con su traje de carreras 'Beyond the Horizon', con pintura degradada y base con efectos translúcidos. \n\n Tamaño: Approx. H250mm (incl. base)"
     },
     {
         id: "pop-up-parade-fine-motion-l",
@@ -62,7 +62,7 @@ const CATALOGO_DETALLE = [
         imagen: "images/FigurFineMo.jpg",
         distribuidor: "Good Smile Company",
         categoria: "POP UP PARADE (Tamaño L)",
-        descripcion: "La noble princesa Fine Motion representada en escala L. Expresa toda su elegancia natural y sonrisa amable, luciendo el uniforme clásico de Tracen con gran nivel de detalle y terminaciones satinadas."
+        descripcion: "La noble princesa Fine Motion representada en escala L. Expresa toda su elegancia natural y sonrisa amable, luciendo el uniforme de carreras con gran nivel de detalle y terminaciones satinadas. \n\n Producto completo de plástico pintado, sin escala, con base incluida. Aproximadamente 235 mm de altura."
     },
     {
         id: "phat-calstone-light-o",
@@ -71,7 +71,7 @@ const CATALOGO_DETALLE = [
         imagen: "images/FigutaCalstone.jpg",
         distribuidor: "Phat! Company",
         categoria: "Escala 1/7",
-        descripcion: "La especialista en velocidad Calstone Light O en una pose cargada de aceleración. Fabricada por Phat! Company con materiales de alta gama, efecto de viento en el cabello y acabados satinados de primera línea."
+        descripcion: "'Soy Calstone Light O. Mi sueño es batir el récord de velocidad punta. Me gustan las líneas rectas. Eso es todo. Soy conocida por mi presentación ultrarrápida.' \n\n La especialista en velocidad Calstone Light O en una pose cargada de aceleración. Fabricada por Phat! Company con materiales de alta gama, efecto de viento en el cabello y acabados satinados de primera línea. \n\n Producto completo de plástico pintado a escala 1/7 con base incluida. Aproximadamente 260 mm de altura."
     },
     {
         id: "nendoroid-silence-suzuka",
@@ -80,7 +80,7 @@ const CATALOGO_DETALLE = [
         imagen: "images/SuzukaNen.jpg",
         distribuidor: "Good Smile Company",
         categoria: "Nendoroid / Chibi",
-        descripcion: "La velocista silenciosa Silence Suzuka en su versión Nendoroid. Incluye expresiones faciales, piernas intercambiables de carrera y su placa de valla de pista de césped."
+        descripcion: "La velocista silenciosa Silence Suzuka en su versión Nendoroid. Incluye expresiones faciales, piernas intercambiables de carrera y su placa de valla de pista de césped. \n\n Figura articulada de plástico pintado, sin escala, con soporte incluido. Aproximadamente 100 mm de altura."
     }
 ];
 
