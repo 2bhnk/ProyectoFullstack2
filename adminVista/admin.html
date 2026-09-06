@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - MachanStore</title>
 
+    <!-- 🔒 BLOQUEO DE SEGURIDAD INMEDIATO -->
     <script>
         (function() {
-            // Ocultamos la vista de inmediato para que nadie alcance a ver el contenido
             document.documentElement.style.display = 'none';
 
             let sesion = null;
@@ -17,209 +17,298 @@
                 sesion = null;
             }
 
-            // CASO 1: NO ESTÁ LOGEADO (sesion es null, undefined o vacío)
+            // Si no hay sesión iniciada
             if (!sesion) {
-                alert('⚠️ Debes iniciar sesión para acceder a esta página.');
+                alert('⚠️ Debes iniciar sesión para acceder al panel de administración.');
                 window.location.replace('../login.html');
                 return;
             }
 
-            // CASO 2: ESTÁ LOGEADO, PERO NO ES ADMINISTRADOR (es un cliente)
+            // Si está logeado pero su rol no es admin
             if (sesion.rol !== 'admin') {
                 alert('⛔ Acceso denegado: Esta vista es exclusiva para administradores.');
                 window.location.replace('../index.html');
                 return;
             }
 
-            // CASO 3: ES ADMIN -> Mostramos la página normalmente
+            // Si es administrador, muestra la página
             document.documentElement.style.display = '';
         })();
     </script>
 
-    <!-- ../ es para salir de la carpeta adminVista y encontrar los estilos -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- Bootstrap 5 y Hoja de Estilos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
-
 </head>
-<body>
+<body class="bg-light d-flex flex-column min-vh-100">
 
+    <!-- Encabezado / Navbar del Administrador -->
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark menu-morado">
+        <nav class="navbar navbar-expand-lg">
             <div class="container">
-                <!-- Indicador que estamos en el Admin -->
-                <a class="navbar-brand titulo-principal m-0" href="../index.html">⋆｡‧˚ʚ MachanStore [ADMIN] ɞ˚‧｡⋆</a>
+                <a class="navbar-brand titulo-principal m-0" href="../index.html">⋆｡ · ˚ʚ MachanStore ɞ ˚· ｡⋆</a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir Menu">
-                    <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menuAdmin" aria-controls="menuAdmin" aria-expanded="false" aria-label="Abrir Menu">
+                    <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="menu">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link boton-menu" href="../index.html">Ver Tienda</a></li>
-                        <li class="nav-item"><a class="nav-link boton-menu active fw-bold" href="#">Panel Control</a></li>
-                        <li class="nav-item"><a class="nav-link boton-menu text-danger" href="../login.html">Cerrar Sesión</a></li>
-                    </ul>
+                <div class="collapse navbar-collapse" id="menuAdmin">
+                    <div class="navbar-nav ms-auto align-items-center gap-2">
+                        <a class="boton-menu" href="../index.html">Ver Tienda</a>
+                        <a class="boton-menu" href="../productos.html">Catálogo</a>
+                        <span class="text-white small fw-bold px-2" id="admin-user-display">👤 Admin</span>
+                        <button id="btn-admin-logout" class="boton-menu btn btn-sm text-white" style="background-color: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 8px;">
+                            Cerrar Sesión
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
 
+    <!-- Contenido Principal -->
     <main class="container my-5 flex-grow-1">
-        
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Panel de Control</h2>
-            <span class="badge bg-secondary fs-6">Administrador: MachanStore Team</span>
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+            <div>
+                <h2 class="mb-1">⤷ Gestión de Inventario y Stock ˎˊ˗</h2>
+                <p class="text-muted small mb-0">Modifica las existencias de las figuras en tiempo real para el catálogo y carrito.</p>
+            </div>
+            <div>
+                <button id="btn-reiniciar-stock" class="btn btn-outline-secondary btn-sm">
+                    Restablecer Inventario Predeterminado
+                </button>
+            </div>
         </div>
 
-        <!-- GESTIÓN DE STOCK -->
-        <section id="gestion-stock" class="mb-5">
-            <h4 class="mb-3 text-start" style="color: var(--morado);">.ೀ Gestión de Inventario</h4>
-            
-            <div class="table-responsive shadow-sm rounded border bg-white p-3">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th scope="col" style="width: 10%;">ID</th>
-                            <th scope="col" style="width: 50%;">Producto</th>
-                            <th scope="col" class="text-center">Stock Actual</th>
-                            <th scope="col" class="text-center">Modificar Stock</th>
-                            <th scope="col" class="text-center">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-lista-productos">
-                        <!-- Ejemplo estático de producto Umamusume -->
-                        <tr>
-                            <td class="fw-bold">#PROD-001</td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="../images/DaiwaNen.webp" alt="Daiwa" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;">
-                                    <span>Nendoroid Daiwa Scarlet (Umamusume)</span>
-                                </div>
-                            </td>
-                            <td class="text-center fw-semibold">12</td>
-                            <td>
-                                <input type="number" class="form-control text-center mx-auto" value="12" min="0" style="max-width: 100px;">
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm text-white" style="background-color: var(--morado);">Actualizar</button>
-                            </td>
-                        </tr>
-                        <!-- Ejemplo 2 -->
-                        <tr>
-                            <td class="fw-bold">#PROD-002</td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="../images/FiguraBourbon.webp" alt="Bourbon" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;">
-                                    <span>POP UP PARADE SP Mihono Bourbon</span>
-                                </div>
-                            </td>
-                            <td class="text-center fw-semibold text-danger">2</td>
-                            <td>
-                                <input type="number" class="form-control text-center mx-auto" value="2" min="0" style="max-width: 100px;">
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm text-white" style="background-color: var(--morado);">Actualizar</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- Tarjetas de Resumen de Inventario -->
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-md-4">
+                <div class="card shadow-sm border-0 border-start border-4 border-primary p-3">
+                    <span class="text-muted small fw-bold">TOTAL DE FIGURAS</span>
+                    <h3 class="mb-0 fw-bold mt-1" id="stat-total-figuras">0</h3>
+                </div>
             </div>
-        </section>
-
-        <!-- GESTIÓN DE PEDIDOS -->
-        <section id="gestion-pedidos">
-            <h4 class="mb-3 text-start" style="color: var(--morado);">𓏲𝄢 Pedidos Recientes</h4>
-            
-            <div class="table-responsive shadow-sm rounded border bg-white p-3">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th scope="col">Orden</th>
-                            <th scope="col">Cliente</th>
-                            <th scope="col">Fecha</th>
-                            <th scope="col" class="text-center">Total</th>
-                            <th scope="col" style="width: 25%;">Estado</th>
-                            <th scope="col" class="text-center">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-lista-pedidos">
-                        <!-- Orden 1 -->
-                        <tr>
-                            <td class="fw-bold">#ORD-5092</td>
-                            <td>Javier Santiago Tapia</td>
-                            <td>12/04/2026</td>
-                            <td class="text-center fw-semibold">$ 73.990</td>
-                            <td>
-                                <select class="form-select form-select-sm border-warning text-warning fw-bold">
-                                    <option value="pendiente" selected>Pendiente</option>
-                                    <option value="transito">En Tránsito</option>
-                                    <option value="entregado">Entregado</option>
-                                </select>
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-success">Guardar</button>
-                            </td>
-                        </tr>
-                        <!-- Orden 2 -->
-                        <tr>
-                            <td class="fw-bold">#ORD-5091</td>
-                            <td>Estudiante Duoc</td>
-                            <td>10/04/2026</td>
-                            <td class="text-center fw-semibold">$ 142.990</td>
-                            <td>
-                                <select class="form-select form-select-sm border-primary text-primary fw-bold">
-                                    <option value="pendiente">Pendiente</option>
-                                    <option value="transito" selected>En Tránsito</option>
-                                    <option value="entregado">Entregado</option>
-                                </select>
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-success">Guardar</button>
-                            </td>
-                        </tr>
-                        <!-- Orden 3 -->
-                        <tr>
-                            <td class="fw-bold">#ORD-5088</td>
-                            <td>Cliente Frecuente</td>
-                            <td>08/04/2026</td>
-                            <td class="text-center fw-semibold">$ 65.990</td>
-                            <td>
-                                <select class="form-select form-select-sm border-success text-success fw-bold">
-                                    <option value="pendiente">Pendiente</option>
-                                    <option value="transito">En Tránsito</option>
-                                    <option value="entregado" selected>Entregado</option>
-                                </select>
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-success">Guardar</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="col-12 col-md-4">
+                <div class="card shadow-sm border-0 border-start border-4 border-warning p-3">
+                    <span class="text-muted small fw-bold">STOCK CRÍTICO (≤ 3 unidades)</span>
+                    <h3 class="mb-0 fw-bold text-warning mt-1" id="stat-stock-critico">0</h3>
+                </div>
             </div>
-        </section>
+            <div class="col-12 col-md-4">
+                <div class="card shadow-sm border-0 border-start border-4 border-danger p-3">
+                    <span class="text-muted small fw-bold">AGOTADOS (0 unidades)</span>
+                    <h3 class="mb-0 fw-bold text-danger mt-1" id="stat-agotados">0</h3>
+                </div>
+            </div>
+        </div>
 
+        <!-- Alerta de Notificación de Cambios -->
+        <div id="alerta-stock" class="alert alert-success alert-dismissible fade d-none" role="alert">
+            <span id="mensaje-alerta-stock">Stock actualizado correctamente.</span>
+            <button type="button" class="btn-close" aria-label="Cerrar" onclick="document.getElementById('alerta-stock').classList.add('d-none')"></button>
+        </div>
+
+        <!-- Tabla de Productos -->
+        <div class="table-responsive bg-white rounded shadow-sm border p-3">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" style="min-width: 280px;">Figura</th>
+                        <th scope="col" class="text-center">Precio CLP</th>
+                        <th scope="col" class="text-center" style="min-width: 140px;">Stock Actual</th>
+                        <th scope="col" class="text-center">Estado</th>
+                        <th scope="col" class="text-center">Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-admin-stock">
+                    <!-- Filas generadas dinámicamente -->
+                </tbody>
+            </table>
+        </div>
     </main>
 
+    <!-- Footer -->
     <footer> 
-        <h3> 𐙚 MachanStore Team 2026: </h3>
-        <p> Kevin Perez </p>
-        <p> Benjamin Tapia </p>
-        <p> William Zamorano </p>
+        <h3>𐙚 MachanStore Team 2026:</h3>
+        <p>Kevin Pérez · Benjamín Tapia · William Zamorano</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    
-    <!-- conectar js de admin -->
-    <script src="js/auth.js"></script>
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Lógica de Administración y Stock -->
     <script>
-    // Verificar si hay sesión y si el rol es admin
-    const sesion = JSON.parse(localStorage.getItem('machan_sesion_activa'));
-    if (!sesion || sesion.rol !== 'admin') {
-        alert('Acceso restringido. Debes iniciar sesión como administrador.');
-        window.location.href = '../login.html';
-    }
-</script>
+        const CLAVE_INVENTARIO = 'machan_inventario';
+        const CLAVE_SESION = 'machan_sesion_activa';
+
+        // Catálogo base predeterminado de MachanStore
+        const PRODUCTOS_BASE = [
+            { id: "nendoroid-daiwa-scarlet", nombre: "Nendoroid Daiwa Scarlet", precio: 73990, stock: 8, imagen: "images/DaiwaNen.webp" },
+            { id: "pop-up-parade-mihono-bourbon", nombre: "POP UP PARADE SP Mihono Bourbon", precio: 65990, stock: 5, imagen: "images/FiguraBourbon.webp" },
+            { id: "pop-up-parade-daiwa-scarlet-l", nombre: "POP UP PARADE Daiwa Scarlet L Size", precio: 58990, stock: 6, imagen: "images/FiguraDaiwa.webp" },
+            { id: "pop-up-parade-machan-costume", nombre: "Aston Machan [Unforgettable Sugar Candy]", precio: 142990, stock: 3, imagen: "images/FiguraMachanCostume.webp" },
+            { id: "alter-tokai-teio-horizon", nombre: "ALTER Tokai Teio [Beyond the Horizon]", precio: 217990, stock: 2, imagen: "images/FiguraTeioAlt.jpg" },
+            { id: "pop-up-parade-fine-motion-l", nombre: "POP UP PARADE Fine Motion L Size", precio: 80990, stock: 4, imagen: "images/FigurFineMo.jpg" },
+            { id: "phat-calstone-light-o", nombre: "Phat! Calstone Light O 1/7", precio: 230990, stock: 3, imagen: "images/FigutaCalstone.jpg" },
+            { id: "nendoroid-silence-suzuka", nombre: "Nendoroid Silence Suzuka", precio: 63990, stock: 7, imagen: "images/SuzukaNen.jpg" }
+        ];
+
+        // Obtener inventario desde localStorage
+        const obtenerInventario = () => {
+            try {
+                const guardado = localStorage.getItem(CLAVE_INVENTARIO);
+                if (!guardado) {
+                    localStorage.setItem(CLAVE_INVENTARIO, JSON.stringify(PRODUCTOS_BASE));
+                    return PRODUCTOS_BASE;
+                }
+                return JSON.parse(guardado);
+            } catch (e) {
+                return PRODUCTOS_BASE;
+            }
+        };
+
+        // Guardar inventario actualizado
+        const guardarInventario = (inventario) => {
+            localStorage.setItem(CLAVE_INVENTARIO, JSON.stringify(inventario));
+        };
+
+        // Formateador de moneda CLP
+        const formatearPesos = (monto) => {
+            return new Intl.NumberFormat('es-CL', {
+                style: 'currency',
+                currency: 'CLP',
+                minimumFractionDigits: 0
+            }).format(monto);
+        };
+
+        // Mostrar alerta temporal
+        const mostrarAlerta = (mensaje, tipo = 'success') => {
+            const alerta = document.getElementById('alerta-stock');
+            const texto = document.getElementById('mensaje-alerta-stock');
+            if (alerta && texto) {
+                alerta.className = `alert alert-${tipo} alert-dismissible fade show`;
+                texto.textContent = mensaje;
+                setTimeout(() => {
+                    alerta.classList.add('d-none');
+                }, 3500);
+            }
+        };
+
+        // Actualizar tarjetas de métricas
+        const actualizarEstadisticas = (productos) => {
+            const totalEl = document.getElementById('stat-total-figuras');
+            const criticoEl = document.getElementById('stat-stock-critico');
+            const agotadosEl = document.getElementById('stat-agotados');
+
+            const total = productos.length;
+            const criticos = productos.filter(p => p.stock > 0 && p.stock <= 3).length;
+            const agotados = productos.filter(p => p.stock <= 0).length;
+
+            if (totalEl) totalEl.textContent = total;
+            if (criticoEl) criticoEl.textContent = criticos;
+            if (agotadosEl) agotadosEl.textContent = agotados;
+        };
+
+        // Dibujar tabla de productos
+        const renderizarTabla = () => {
+            const tbody = document.getElementById('tabla-admin-stock');
+            if (!tbody) return;
+
+            const productos = obtenerInventario();
+            tbody.innerHTML = '';
+
+            actualizarEstadisticas(productos);
+
+            productos.forEach(prod => {
+                const fila = document.createElement('tr');
+                const esAgotado = prod.stock <= 0;
+                const esCritico = prod.stock > 0 && prod.stock <= 3;
+
+                let estadoBadge = '<span class="badge bg-success">Disponible</span>';
+                if (esAgotado) {
+                    estadoBadge = '<span class="badge bg-danger">Agotado</span>';
+                } else if (esCritico) {
+                    estadoBadge = '<span class="badge bg-warning text-dark">Stock Bajo</span>';
+                }
+
+                fila.innerHTML = `
+                    <td class="align-middle">
+                        <div class="d-flex align-items-center">
+                            <img src="../${prod.imagen}" alt="${prod.nombre}" 
+                                 style="width: 52px; height: 52px; object-fit: contain; background-color: #f8f9fa;" 
+                                 class="me-3 rounded border p-1">
+                            <span class="fw-semibold">${prod.nombre}</span>
+                        </div>
+                    </td>
+                    <td class="text-center align-middle">${formatearPesos(prod.precio)}</td>
+                    <td class="text-center align-middle">
+                        <div class="input-group input-group-sm mx-auto" style="max-width: 120px;">
+                            <input type="number" min="0" class="form-control text-center fw-bold input-stock-valor" 
+                                   data-id="${prod.id}" value="${prod.stock}">
+                        </div>
+                    </td>
+                    <td class="text-center align-middle">${estadoBadge}</td>
+                    <td class="text-center align-middle">
+                        <button class="btn btn-sm text-white btn-guardar-stock" data-id="${prod.id}" 
+                                style="background-color: #5b4b7a;" title="Guardar cambios">
+                            Guardar
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(fila);
+            });
+        };
+
+        // Inicialización y eventos
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mostrar nombre del admin logeado
+            try {
+                const sesion = JSON.parse(localStorage.getItem(CLAVE_SESION));
+                const userDisplay = document.getElementById('admin-user-display');
+                if (sesion && userDisplay) {
+                    userDisplay.textContent = `👤 ${sesion.nombre || 'Admin'}`;
+                }
+            } catch (e) {}
+
+            renderizarTabla();
+
+            // Delegación de eventos para guardar stock
+            document.getElementById('tabla-admin-stock')?.addEventListener('click', (e) => {
+                const btn = e.target.closest('.btn-guardar-stock');
+                if (btn) {
+                    const id = btn.dataset.id;
+                    const input = document.querySelector(`.input-stock-valor[data-id="${id}"]`);
+                    if (input) {
+                        const nuevoStock = Math.max(0, parseInt(input.value, 10) || 0);
+                        const inventario = obtenerInventario();
+                        const prod = inventario.find(p => p.id === id);
+
+                        if (prod) {
+                            prod.stock = nuevoStock;
+                            guardarInventario(inventario);
+                            renderizarTabla();
+                            mostrarAlerta(`✓ Stock de "${prod.nombre}" actualizado a ${nuevoStock} unidades.`);
+                        }
+                    }
+                }
+            });
+
+            // Restablecer catálogo
+            document.getElementById('btn-reiniciar-stock')?.addEventListener('click', () => {
+                if (confirm('¿Estás seguro de restablecer el inventario a sus valores por defecto?')) {
+                    guardarInventario(PRODUCTOS_BASE);
+                    renderizarTabla();
+                    mostrarAlerta('Inventario restablecido a los valores por defecto.', 'info');
+                }
+            });
+
+            // Botón cerrar sesión
+            document.getElementById('btn-admin-logout')?.addEventListener('click', () => {
+                localStorage.removeItem(CLAVE_SESION);
+                alert('Sesión cerrada correctamente.');
+                window.location.replace('../login.html');
+            });
+        });
+    </script>
 </body>
 </html>

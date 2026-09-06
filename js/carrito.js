@@ -1,17 +1,54 @@
 /**
  * js/carrito.js
- * Gestión de compras, cálculo de cupones de descuento y persistencia
+ * Gestión completa del carrito de compras, cálculo de cupones de descuento,
+ * validación reactiva de existencias y persistencia en localStorage.
  */
 
 const CLAVE_CARRITO = 'carrito_tienda';
 const CLAVE_CUPON = 'cupon_activo_tienda';
+const CLAVE_INVENTARIO = 'machan_inventario';
 
-// --- UTILIDADES DE LOCALSTORAGE ---
+// Catálogo base de inventario (por defecto si no ha sido inicializado en adminVista)
+const INVENTARIO_PREDETERMINADO = [
+    { id: "nendoroid-daiwa-scarlet", nombre: "Nendoroid Daiwa Scarlet", precio: 73990, stock: 8, imagen: "images/DaiwaNen.webp" },
+    { id: "pop-up-parade-mihono-bourbon", nombre: "POP UP PARADE SP Mihono Bourbon", precio: 65990, stock: 5, imagen: "images/FiguraBourbon.webp" },
+    { id: "pop-up-parade-daiwa-scarlet-l", nombre: "POP UP PARADE Daiwa Scarlet L Size", precio: 58990, stock: 6, imagen: "images/FiguraDaiwa.webp" },
+    { id: "pop-up-parade-machan-costume", nombre: "Aston Machan [Unforgettable Sugar Candy]", precio: 142990, stock: 3, imagen: "images/FiguraMachanCostume.webp" },
+    { id: "alter-tokai-teio-horizon", nombre: "ALTER Tokai Teio [Beyond the Horizon]", precio: 217990, stock: 2, imagen: "images/FiguraTeioAlt.jpg" },
+    { id: "pop-up-parade-fine-motion-l", nombre: "POP UP PARADE Fine Motion L Size", precio: 80990, stock: 4, imagen: "images/FigurFineMo.jpg" },
+    { id: "phat-calstone-light-o", nombre: "Phat! Calstone Light O 1/7", precio: 230990, stock: 3, imagen: "images/FigutaCalstone.jpg" },
+    { id: "nendoroid-silence-suzuka", nombre: "Nendoroid Silence Suzuka", precio: 63990, stock: 7, imagen: "images/SuzukaNen.jpg" }
+];
+
+// --- GESTIÓN DE INVENTARIO CENTRALIZADO ---
+const obtenerInventario = () => {
+    try {
+        const guardado = localStorage.getItem(CLAVE_INVENTARIO);
+        if (!guardado) {
+            localStorage.setItem(CLAVE_INVENTARIO, JSON.stringify(INVENTARIO_PREDETERMINADO));
+            return INVENTARIO_PREDETERMINADO;
+        }
+        return JSON.parse(guardado);
+    } catch (e) {
+        return INVENTARIO_PREDETERMINADO;
+    }
+};
+
+const guardarInventario = (inventario) => {
+    localStorage.setItem(CLAVE_INVENTARIO, JSON.stringify(inventario));
+};
+
+const obtenerStockProducto = (id) => {
+    const inv = obtenerInventario();
+    const prod = inv.find(p => p.id === id);
+    return prod ? prod.stock : 0;
+};
+
+// --- UTILIDADES DEL CARRITO ---
 const obtenerCarrito = () => {
     try {
         return JSON.parse(localStorage.getItem(CLAVE_CARRITO)) || [];
     } catch (error) {
-        console.error('Error al leer carrito:', error);
         return [];
     }
 };
@@ -45,7 +82,7 @@ const formatearPesosChilenos = (valor) => {
     }).format(valor);
 };
 
-// --- CONTADOR EN NAVBAR ---
+// --- ACTUALIZAR CONTADOR DE NAVBAR ---
 const actualizarContadorBadge = () => {
     const badges = document.querySelectorAll('#carrito-contador');
     const carrito = obtenerCarrito();
@@ -56,7 +93,7 @@ const actualizarContadorBadge = () => {
     });
 };
 
-// --- AGREGAR PRODUCTO (productos.html) ---
+// --- AGREGAR PRODUCTO DESDE CATÁLOGO CON VERIFICACIÓN DE STOCK ---
 const agregarAlCarrito = (boton) => {
     const id = boton.dataset.id;
     const nombre = boton.dataset.nombre;
@@ -65,10 +102,21 @@ const agregarAlCarrito = (boton) => {
 
     if (!id || isNaN(precio)) return;
 
+    const stockDisponible = obtenerStockProducto(id);
+
+    if (stockDisponible <= 0) {
+        alert('Lo sentimos, este producto se encuentra agotado.');
+        return;
+    }
+
     const carrito = obtenerCarrito();
     const itemExistente = carrito.find(item => item.id === id);
 
     if (itemExistente) {
+        if (itemExistente.cantidad >= stockDisponible) {
+            alert(`No puedes agregar más. Solo quedan ${stockDisponible} unidades disponibles de esta figura.`);
+            return;
+        }
         itemExistente.cantidad += 1;
     } else {
         carrito.push({ id, nombre, precio, imagen, cantidad: 1 });
@@ -89,13 +137,19 @@ const agregarAlCarrito = (boton) => {
     }, 900);
 };
 
-// --- GESTIÓN DE CANTIDADES Y ELIMINACIÓN ---
-const alterarCantidad = (id, delta) => {
+// --- CONTROL DE CANTIDADES CON CONTROL DE LÍMITE DE STOCK ---
+const alterarCantidad = (id, incremento) => {
     let carrito = obtenerCarrito();
     const producto = carrito.find(item => item.id === id);
+    const stockMaximo = obtenerStockProducto(id);
 
     if (producto) {
-        producto.cantidad += delta;
+        if (incremento > 0 && producto.cantidad >= stockMaximo) {
+            alert(`Has alcanzado el límite máximo de existencias disponibles (${stockMaximo} unidades).`);
+            return;
+        }
+
+        producto.cantidad += incremento;
         if (producto.cantidad <= 0) {
             carrito = carrito.filter(item => item.id !== id);
         }
@@ -118,7 +172,7 @@ const vaciarTodoElCarrito = () => {
     dibujarTablaCarrito();
 };
 
-// --- VALIDACIÓN Y APLICACIÓN DE CUPONES (IE1.2.1) ---
+// --- VALIDACIÓN DE CUPONES DE DESCUENTO ---
 const procesarCodigoDescuento = () => {
     const inputCupon = document.getElementById('input-cupon');
     const mensajeCupon = document.getElementById('mensaje-cupon');
@@ -128,7 +182,6 @@ const procesarCodigoDescuento = () => {
 
     const valor = inputCupon.value.trim();
 
-    // Validar si el carrito tiene productos
     if (carrito.length === 0) {
         mensajeCupon.textContent = 'Agrega productos al carrito antes de aplicar un descuento.';
         mensajeCupon.className = 'small mt-2 text-danger fw-semibold d-block';
@@ -146,7 +199,6 @@ const procesarCodigoDescuento = () => {
 
     let cuponAplicado = null;
 
-    // Caso 1: Código oficial Duoc UC (20%) o Correo Institucional
     if (valorMayus === 'DUOC20' || valorMayus === 'DUOCUC' || regexDuocEmail.test(valor)) {
         cuponAplicado = {
             codigo: regexDuocEmail.test(valor) ? 'Convenio Duoc UC' : valorMayus,
@@ -155,9 +207,7 @@ const procesarCodigoDescuento = () => {
         };
         mensajeCupon.textContent = '¡Descuento institucional del 20% aplicado con éxito!';
         mensajeCupon.className = 'small mt-2 text-success fw-semibold d-block';
-    } 
-    // Caso 2: Cupón fidelización Ciber Equipo Pride (10%)
-    else if (valorMayus === 'PRIDE10' || valorMayus === 'PRIDE') {
+    } else if (valorMayus === 'PRIDE10' || valorMayus === 'PRIDE') {
         cuponAplicado = {
             codigo: 'PRIDE10',
             porcentaje: 0.10,
@@ -165,9 +215,7 @@ const procesarCodigoDescuento = () => {
         };
         mensajeCupon.textContent = '¡Cupón Pride aplicado! Disfrutas de un 10% de descuento.';
         mensajeCupon.className = 'small mt-2 text-success fw-semibold d-block';
-    } 
-    // Caso 3: Código inválido
-    else {
+    } else {
         mensajeCupon.textContent = 'Código o correo no válido. Prueba con DUOC20 o tu correo @duocuc.cl.';
         mensajeCupon.className = 'small mt-2 text-danger fw-semibold d-block';
         return;
@@ -189,7 +237,7 @@ const eliminarCupon = () => {
     dibujarTablaCarrito();
 };
 
-// --- RENDERIZADO DEL CARRITO Y TOTALES ---
+// --- RENDERIZADO DE TABLA EN CARRITO.HTML ---
 const dibujarTablaCarrito = () => {
     const contenedor = document.getElementById('carrito-items');
     const elementoSubtotal = document.getElementById('carrito-subtotal');
@@ -240,6 +288,14 @@ const dibujarTablaCarrito = () => {
     let subtotal = 0;
 
     carrito.forEach(prod => {
+        const stockActual = obtenerStockProducto(prod.id);
+        
+        // Si el admin redujo el stock por debajo de la cantidad que ya tenía en el carrito
+        if (prod.cantidad > stockActual) {
+            prod.cantidad = Math.max(1, stockActual);
+            guardarCarrito(carrito);
+        }
+
         const totalFila = prod.precio * prod.cantidad;
         subtotal += totalFila;
 
@@ -247,9 +303,11 @@ const dibujarTablaCarrito = () => {
         fila.innerHTML = `
             <td class="align-middle">
                 <div class="d-flex align-items-center">
-                    <!-- AQUÍ VA LA CLASE NUEVA: -->
-                    <img src="${prod.imagen}" alt="${prod.nombre}" class="img-carrito-figura me-3 rounded border p-1">
-                    <span class="fw-semibold">${prod.nombre}</span>
+                    <img src="${prod.imagen}" alt="${prod.nombre}" class="img-carrito-figura me-3 rounded border p-1" style="width: 60px; height: 60px; object-fit: contain; background: #fff;">
+                    <div>
+                        <span class="fw-semibold d-block">${prod.nombre}</span>
+                        <small class="text-muted">Stock actual: ${stockActual}</small>
+                    </div>
                 </div>
             </td>
             <td class="text-center align-middle">${formatearPesosChilenos(prod.precio)}</td>
@@ -257,18 +315,20 @@ const dibujarTablaCarrito = () => {
                 <div class="btn-group border rounded" role="group">
                     <button type="button" class="btn btn-light btn-sm btn-decrementar px-2" data-id="${prod.id}">−</button>
                     <span class="px-3 py-1 fw-bold bg-white">${prod.cantidad}</span>
-                    <button type="button" class="btn btn-light btn-sm btn-incrementar px-2" data-id="${prod.id}">+</button>
+                    <button type="button" class="btn btn-light btn-sm btn-incrementar px-2" data-id="${prod.id}" ${prod.cantidad >= stockActual ? 'disabled' : ''}>+</button>
                 </div>
             </td>
             <td class="text-center align-middle fw-bold">${formatearPesosChilenos(totalFila)}</td>
             <td class="text-center align-middle">
-                <button type="button" class="btn btn-outline-danger btn-sm btn-eliminar" data-id="${prod.id}">✕</button>
+                <button type="button" class="btn btn-outline-danger btn-sm btn-eliminar" data-id="${prod.id}" title="Eliminar figura">
+                    ✕
+                </button>
             </td>
         `;
         contenedor.appendChild(fila);
     });
 
-    // Cálculos con Descuento
+    // Descuentos
     const cupon = obtenerCuponActivo();
     let montoDescuento = 0;
 
@@ -283,31 +343,47 @@ const dibujarTablaCarrito = () => {
         if (filaDescuento) filaDescuento.classList.add('d-none');
     }
 
-    const totalFinal = subtotal - montoDescuento;
+    const totalFinal = Math.max(0, subtotal - montoDescuento);
 
     if (elementoSubtotal) elementoSubtotal.textContent = formatearPesosChilenos(subtotal);
     if (elementoTotal) elementoTotal.textContent = formatearPesosChilenos(totalFinal);
 };
 
-// --- SIMULACIÓN DE FINALIZACIÓN DE COMPRA ---
+// --- PROCESAR COMPRA Y DESCONTAR STOCK REAL ---
 const procesarCompra = () => {
     const alertaCompra = document.getElementById('alerta-compra');
     const carrito = obtenerCarrito();
 
     if (carrito.length === 0) return;
 
-    vaciarTodoElCarrito();
+    // 1. Descontar del inventario centralizado
+    const inventario = obtenerInventario();
+    carrito.forEach(item => {
+        const prod = inventario.find(p => p.id === item.id);
+        if (prod) {
+            prod.stock = Math.max(0, prod.stock - item.cantidad);
+        }
+    });
+    guardarInventario(inventario);
 
+    // 2. Vaciar carrito
+    localStorage.removeItem(CLAVE_CARRITO);
+    removerCuponActivo();
+    actualizarContadorBadge();
+    dibujarTablaCarrito();
+
+    // 3. Mostrar confirmación
     if (alertaCompra) {
         alertaCompra.classList.remove('d-none');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 };
 
-// --- INICIALIZACIÓN Y EVENTOS ---
+// --- ESCUCHADORES DE EVENTOS ---
 document.addEventListener('DOMContentLoaded', () => {
     actualizarContadorBadge();
 
-    // Evento para botones de agregar (catálogo)
+    // Evento para añadir desde catálogo
     document.addEventListener('click', (e) => {
         const botonAgregar = e.target.closest('.btn-agregar');
         if (botonAgregar) agregarAlCarrito(botonAgregar);
@@ -328,7 +404,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (btnEli) borrarArticulo(btnEli.dataset.id);
         });
 
-        // Botones de acción
         const btnVaciar = document.getElementById('btn-vaciar');
         if (btnVaciar) btnVaciar.addEventListener('click', vaciarTodoElCarrito);
 
@@ -341,7 +416,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const btnQuitarCupon = document.getElementById('btn-quitar-cupon');
         if (btnQuitarCupon) btnQuitarCupon.addEventListener('click', eliminarCupon);
 
-        // Permitir presionar Enter en el input de cupón
         const inputCupon = document.getElementById('input-cupon');
         if (inputCupon) {
             inputCupon.addEventListener('keydown', (e) => {
