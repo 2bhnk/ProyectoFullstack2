@@ -275,3 +275,14 @@ footer {
   color: #ffffff !important;
   font-weight: 700;
 }
+
+/* --- ESTILOS EXTRA PARA EL SIDEBAR DEL ADMIN --- */
+.sidebar-link {
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.sidebar-link:hover {
+    background-color: #f0f0f0;
+    color: var(--morado) !important;
+}
