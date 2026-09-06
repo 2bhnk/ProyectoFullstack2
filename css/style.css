@@ -155,7 +155,8 @@ footer {
 }
 
 #formContacto,
-#formLogin {
+#formLogin,
+#formRegistro {
     max-width: 560px;
     margin: 28px auto 0;
     padding: 28px;
@@ -251,3 +252,26 @@ footer {
     }
 }
 
+/* ==========================================================
+   ESTILOS PERSONALIZADOS: MÓDULO CARRITO DE COMPRAS
+   ========================================================== */
+
+.img-carrito-figura {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  background-color: #f8f9fa;
+}
+
+/* Asegura texto blanco brillante en todos los enlaces del menú */
+.menu-morado .nav-link,
+.menu-morado .boton-menu {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Resalta el enlace activo sin oscurecer los demás */
+.menu-morado .nav-link.active {
+  color: #ffffff !important;
+  font-weight: 700;
+}
