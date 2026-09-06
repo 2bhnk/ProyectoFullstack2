@@ -1,69 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Registrarse</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - MachanStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-	<header>
-		<nav class="navbar navbar-expand-lg navbar-dark menu-morado">
-			<div class="container">
-				<a class="navbar-brand titulo-principal m-0" href="index.html">⋆｡‧˚ʚ MachanStore ɞ˚‧｡⋆</a>
 
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir Menu">
-					<span class="navbar-toggler-icon"></span>
-				</button>
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand titulo-principal m-0" href="index.html">⋆｡ · ˚ʚ MachanStore ɞ ˚· ｡⋆</a>
+                <div class="navbar-nav ms-auto align-items-center">
+                    <a class="boton-menu" href="index.html">Inicio</a>
+                    <a class="boton-menu" href="productos.html">Productos</a>
+                    <a class="boton-menu" href="contacto.html">Contacto</a>
+                    <a class="boton-menu" href="login.html">Iniciar sesión</a>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-				<div class="collapse navbar-collapse" id="menu">
-					<ul class="navbar-nav ms-auto">
-						<li class="nav-item"><a class="nav-link boton-menu" href="index.html">Inicio</a></li>
-						<li class="nav-item"><a class="nav-link boton-menu" href="productos.html">Productos</a></li>
-						<li class="nav-item"><a class="nav-link boton-menu" href="contacto.html">Contacto</a></li>
-						<li class="nav-item"><a class="nav-link boton-menu" href="carrito.html">Carrito <span id="carrito-contador" class="badge rounded-pill bg-danger">0</span></a></li>
-						<li class="nav-item"><a class="nav-link boton-menu" href="login.html">Iniciar sesión</a></li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</header>
+    <main class="container my-5" style="max-width: 520px;">
+        <div class="bg-white p-4 rounded shadow-sm border">
+            <h2 class="text-center mb-3">⤷ Crear Cuenta ˎˊ˗</h2>
+            <p class="text-center text-muted small mb-4">Únete a MachanStore para gestionar tus pedidos y obtener descuentos.</p>
 
-	<main class="container my-5" style="max-width: 500px;">
-		<h1 class="text-center mb-4">Crear cuenta</h1>
+            <form id="formRegistro" novalidate>
+                <div class="mb-3">
+                    <label for="regNombre" class="form-label fw-bold">Nombre Completo:</label>
+                    <input type="text" id="regNombre" class="form-control" placeholder="Ej: Javier Tapia" autocomplete="name">
+                    <small class="mensaje-error text-danger small" id="errorRegNombre" style="display: none;"></small>
+                </div>
 
-		<form id="formRegistro">
-			<div class="mb-3">
-				<label for="nombre" class="form-label">Nombre</label>
-				<input type="text" id="nombre" class="form-control" required>
-			</div>
+                <div class="mb-3">
+                    <label for="regEmail" class="form-label fw-bold">Correo Electrónico:</label>
+                    <input type="email" id="regEmail" class="form-control" placeholder="usuario@correo.com" autocomplete="email">
+                    <small class="mensaje-error text-danger small" id="errorRegEmail" style="display: none;"></small>
+                </div>
 
-			<div class="mb-3">
-				<label for="email" class="form-label">Correo electrónico</label>
-				<input type="email" id="email" class="form-control" required>
-			</div>
+                <div class="mb-3">
+                    <label for="regPassword" class="form-label fw-bold">Contraseña:</label>
+                    <input type="password" id="regPassword" class="form-control" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+                    <small class="mensaje-error text-danger small" id="errorRegPassword" style="display: none;"></small>
+                </div>
 
-			<div class="mb-3">
-				<label for="password" class="form-label">Contraseña</label>
-				<input type="password" id="password" class="form-control" required>
-			</div>
+                <div class="mb-3">
+                    <label for="regPassword2" class="form-label fw-bold">Confirmar Contraseña:</label>
+                    <input type="password" id="regPassword2" class="form-control" placeholder="Repite tu contraseña" autocomplete="new-password">
+                    <small class="mensaje-error text-danger small" id="errorRegPassword2" style="display: none;"></small>
+                </div>
 
-			<button type="submit" class="btn btn-primary w-100">Registrarse</button>
+                <button type="submit" class="btn btn-primary w-100 py-2 mt-2" style="background-color: #5b4b7a; border: none;">
+                    Registrarme
+                </button>
 
-			<p class="text-center mt-3 mb-0">
-				¿Ya tienes una cuenta? <a href="login.html">Inicia sesión aquí</a>
-			</p>
-		</form>
-	</main>
-<!-- Pie de Página -->
-	<footer>
-		<h3> 𐙚 MachanStore Team 2026: </h3>
-		<p> Kevin Perez </p>
-		<p> Benjamin Tapia </p>
-		<p> William Zamorano </p>
-	</footer>
-	<script src="js/carrito.js"></script>
+                <div id="mensajeExitoRegistro" class="alert alert-success mt-3 text-center" style="display: none;"></div>
+            </form>
+
+            <div class="text-center mt-3 small">
+                ¿Ya tienes una cuenta? <a href="login.html" class="fw-bold" style="color: #5b4b7a;">Inicia sesión aquí</a>
+            </div>
+        </div>
+    </main>
+
+    <footer> 
+        <h3>𐙚 MachanStore Team 2026:</h3>
+        <p>Kevin Pérez · Benjamín Tapia · William Zamorano</p>
+    </footer>
+	<script src="js/session.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
