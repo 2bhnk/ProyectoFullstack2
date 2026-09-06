@@ -155,7 +155,8 @@ footer {
 }
 
 #formContacto,
-#formLogin {
+#formLogin,
+#formRegistro {
     max-width: 560px;
     margin: 28px auto 0;
     padding: 28px;
