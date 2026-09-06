@@ -3,295 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Productos - MachanStore</title>
-    
-    <!-- Bootstrap 5 y CSS personalizado -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Tienda - Productos</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="d-flex flex-column min-vh-100 bg-light">
 
-    <!-- Encabezado y Navbar -->
+<body> 
     <header>
-        <nav class="navbar navbar-expand-lg">
+        <nav class="navbar navbar-expand-lg navbar-dark menu-morado">
             <div class="container">
-                <a class="navbar-brand titulo-principal m-0" href="index.html">⋆｡ · ˚ʚ MachanStore ɞ ˚· ｡⋆</a>
+                <a class="navbar-brand titulo-principal m-0" href="index.html">⋆｡‧˚ʚ MachanStore ɞ˚‧｡⋆</a>
 
-                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir Menu">
-                    <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir Menu">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="menu">
-                    <div class="navbar-nav ms-auto align-items-center">
-                        <a class="boton-menu" href="index.html">Inicio</a>
-                        <a class="boton-menu active" href="productos.html">Productos</a>
-                        <a class="boton-menu" href="contacto.html">Contacto</a>
-                        <a class="boton-menu" href="carrito.html">
-                            Carrito <span id="carrito-contador" class="badge rounded-pill bg-danger">0</span>
-                        </a>
-                        <a class="boton-menu" href="login.html">Iniciar sesión</a>
-                    </div>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link boton-menu" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link boton-menu active" href="productos.html">Productos</a></li>
+                        <li class="nav-item"><a class="nav-link boton-menu" href="contacto.html">Contacto</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link boton-menu fw-bold" href="carrito.html">
+                                Carrito <span id="carrito-contador" class="badge rounded-pill bg-danger">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link boton-menu" href="login.html">Iniciar sesión</a></li>
+                    </ul>
                 </div>
             </div>
         </nav>
     </header>
 
-    <!-- Contenido Principal -->
-    <main class="container my-5 flex-grow-1">
-        <div class="text-center mb-5">
-            <h1 class="fw-bold mb-2">⤷ Catálogo de Figuras y Coleccionables ˎˊ˗</h1>
-            <p class="text-muted">Figuras oficiales e importadas de Umamusume: Pretty Derby y más.</p>
-        </div>
 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="contenedor-catalogo">
-            
-            <!-- 1. Nendoroid Daiwa Scarlet -->
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0 d-flex flex-column text-center p-3">
-                    <a href="detallesProducto.html?id=nendoroid-daiwa-scarlet" class="text-decoration-none text-dark">
-                        <img src="images/DaiwaNen.webp" class="card-img-top img-fluid p-2" alt="Nendoroid Daiwa Scarlet" style="height: 200px; object-fit: contain;">
-                        <h6 class="titulo-producto mt-2 fw-bold">Nendoroid Daiwa Scarlet</h6>
-                    </a>
-                    <p class="text-muted small mb-1">Good Smile Company</p>
-                    <p class="fs-5 fw-bold text-success mb-2">$73.990</p>
-                    
-                    <div class="mt-auto">
-                        <div class="badge-stock-info small mb-2 fw-semibold" data-id="nendoroid-daiwa-scarlet"></div>
-                        <button 
-                          class="btn btn-primary w-100 btn-agregar" 
-                          data-id="nendoroid-daiwa-scarlet" 
-                          data-nombre="Good Smile Company Nendoroid Daiwa Scarlet" 
-                          data-precio="73990" 
-                          data-imagen="images/DaiwaNen.webp"
-                          style="background-color: #5b4b7a; border: none;">
-                          Añadir
+    <main class="container my-5 text-center">
+        <section id="productos">
+            <h1> ⤷ ゛Nuestros productos ˎˊ˗ </h1>
+
+           <div id="contenedor-productos" class="row g-4 mt-4">
+
+                <!-- Producto 1 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <article class="tarjeta-producto">
+                        <a href="detallesProducto.html?id=nendoroid-daiwa-scarlet" class="text-decoration-none text-dark">
+                            <img src="images/DaiwaNen.webp" alt="Nendoroid de Daiwa Scarlet" height="200">
+                            <h3 class="tarjeta-titulo">Good Smile Company Nendoroid Daiwa Scarlet (Umamusume: Pretty Derby)</h3>
+                        </a>
+                        <p class="tarjeta-precio">$73.990</p>
+                        <button class="btn btn-primary btn-agregar" data-id="nendoroid-daiwa-scarlet" data-nombre="Good Smile Company Nendoroid Daiwa Scarlet (Umamusume: Pretty Derby)" data-precio="73990" data-imagen="images/DaiwaNen.webp">
+                            Añadir
                         </button>
-                    </div>
+                    </article>
                 </div>
-            </div>
 
-            <!-- 2. POP UP PARADE SP Mihono Bourbon -->
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0 d-flex flex-column text-center p-3">
-                    <a href="detallesProducto.html?id=pop-up-parade-mihono-bourbon" class="text-decoration-none text-dark">
-                        <img src="images/FiguraBourbon.webp" class="card-img-top img-fluid p-2" alt="POP UP PARADE SP Mihono Bourbon" style="height: 200px; object-fit: contain;">
-                        <h6 class="titulo-producto mt-2 fw-bold">POP UP PARADE Mihono Bourbon</h6>
-                    </a>
-                    <p class="text-muted small mb-1">Good Smile Company</p>
-                    <p class="fs-5 fw-bold text-success mb-2">$65.990</p>
-                    
-                    <div class="mt-auto">
-                        <div class="badge-stock-info small mb-2 fw-semibold" data-id="pop-up-parade-mihono-bourbon"></div>
-                        <button 
-                          class="btn btn-primary w-100 btn-agregar" 
-                          data-id="pop-up-parade-mihono-bourbon" 
-                          data-nombre="Good Smile Company POP UP PARADE SP Mihono Bourbon" 
-                          data-precio="65990" 
-                          data-imagen="images/FiguraBourbon.webp"
-                          style="background-color: #5b4b7a; border: none;">
-                          Añadir
+                <!-- Producto 2 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <article class="tarjeta-producto">
+                        <a href="detallesProducto.html?id=pop-up-parade-mihono-bourbon" class="text-decoration-none text-dark">
+                            <img src="images/FiguraBourbon.webp" alt="Figura de Mihono Bourbon" height="200">
+                            <h3 class="tarjeta-titulo">Good Smile Company POP UP PARADE SP Mihono Bourbon (Umamusume: Pretty Derby)</h3>
+                        </a>
+                        <p class="tarjeta-precio">$65.990</p>
+                        <button class="btn btn-primary btn-agregar" data-id="pop-up-parade-mihono-bourbon" data-nombre="Good Smile Company POP UP PARADE SP Mihono Bourbon (Umamusume: Pretty Derby)" data-precio="65990" data-imagen="images/FiguraBourbon.webp">
+                            Añadir
                         </button>
-                    </div>
+                    </article>
                 </div>
-            </div>
 
-            <!-- 3. POP UP PARADE Daiwa Scarlet L -->
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0 d-flex flex-column text-center p-3">
-                    <a href="detallesProducto.html?id=pop-up-parade-daiwa-scarlet-l" class="text-decoration-none text-dark">
-                        <img src="images/FiguraDaiwa.webp" class="card-img-top img-fluid p-2" alt="POP UP PARADE Daiwa Scarlet L" style="height: 200px; object-fit: contain;">
-                        <h6 class="titulo-producto mt-2 fw-bold">POP UP PARADE Daiwa Scarlet L</h6>
-                    </a>
-                    <p class="text-muted small mb-1">Good Smile Company</p>
-                    <p class="fs-5 fw-bold text-success mb-2">$58.990</p>
-                    
-                    <div class="mt-auto">
-                        <div class="badge-stock-info small mb-2 fw-semibold" data-id="pop-up-parade-daiwa-scarlet-l"></div>
-                        <button 
-                          class="btn btn-primary w-100 btn-agregar" 
-                          data-id="pop-up-parade-daiwa-scarlet-l" 
-                          data-nombre="Good Smile Company POP UP PARADE Daiwa Scarlet L Size" 
-                          data-precio="58990" 
-                          data-imagen="images/FiguraDaiwa.webp"
-                          style="background-color: #5b4b7a; border: none;">
-                          Añadir
+                <!-- Producto 3 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <article class="tarjeta-producto">
+                        <a href="detallesProducto.html?id=pop-up-parade-daiwa-scarlet-l" class="text-decoration-none text-dark">
+                            <img src="images/FiguraDaiwa.webp" alt="Figura de Daiwa Scarlet" height="200">
+                            <h3 class="tarjeta-titulo">Good Smile Company POP UP PARADE Daiwa Scarlet L Size Figure (Umamusume: Pretty Derby)</h3>
+                        </a>
+                        <p class="tarjeta-precio">$58.990</p>
+                        <button class="btn btn-primary btn-agregar" data-id="pop-up-parade-daiwa-scarlet-l" data-nombre="Good Smile Company POP UP PARADE Daiwa Scarlet L Size Figure (Umamusume: Pretty Derby)" data-precio="58990" data-imagen="images/FiguraDaiwa.webp">
+                            Añadir
                         </button>
-                    </div>
+                    </article>
                 </div>
-            </div>
 
-            <!-- 4. Aston Machan Sugar Candy -->
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0 d-flex flex-column text-center p-3">
-                    <a href="detallesProducto.html?id=pop-up-parade-machan-costume" class="text-decoration-none text-dark">
-                        <img src="images/FiguraMachanCostume.webp" class="card-img-top img-fluid p-2" alt="Aston Machan Costume" style="height: 200px; object-fit: contain;">
-                        <h6 class="titulo-producto mt-2 fw-bold">Aston Machan Sugar Candy 1/7</h6>
-                    </a>
-                    <p class="text-muted small mb-1">Good Smile Arts Shanghai</p>
-                    <p class="fs-5 fw-bold text-success mb-2">$142.990</p>
-                    
-                    <div class="mt-auto">
-                        <div class="badge-stock-info small mb-2 fw-semibold" data-id="pop-up-parade-machan-costume"></div>
-                        <button 
-                          class="btn btn-primary w-100 btn-agregar" 
-                          data-id="pop-up-parade-machan-costume" 
-                          data-nombre="Aston Machan [Unforgettable Sugar Candy]" 
-                          data-precio="142990" 
-                          data-imagen="images/FiguraMachanCostume.webp"
-                          style="background-color: #5b4b7a; border: none;">
-                          Añadir
+                <!-- Producto 4 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <article class="tarjeta-producto">
+                        <a href="detallesProducto.html?id=pop-up-parade-machan-costume" class="text-decoration-none text-dark">
+                            <img src="images/FiguraMachanCostume.webp" alt="Figura de Aston Machan" height="200">
+                            <h3 class="tarjeta-titulo">Good Smile Collection [Unforgettable Sugar Candy] Aston Machan (Umamusume: Pretty Derby)</h3>
+                        </a>
+                        <p class="tarjeta-precio">$142.990</p>
+                        <button class="btn btn-primary btn-agregar" data-id="pop-up-parade-machan-costume" data-nombre="Good Smile Collection [Unforgettable Sugar Candy] Aston Machan (Umamusume: Pretty Derby)" data-precio="142990" data-imagen="images/FiguraMachanCostume.webp">
+                            Añadir
                         </button>
-                    </div>
+                    </article>
                 </div>
-            </div>
 
-            <!-- 5. ALTER Tokai Teio -->
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0 d-flex flex-column text-center p-3">
-                    <a href="detallesProducto.html?id=alter-tokai-teio-horizon" class="text-decoration-none text-dark">
-                        <img src="images/FiguraTeioAlt.jpg" class="card-img-top img-fluid p-2" alt="ALTER Tokai Teio" style="height: 200px; object-fit: contain;">
-                        <h6 class="titulo-producto mt-2 fw-bold">ALTER Tokai Teio 1/7</h6>
-                    </a>
-                    <p class="text-muted small mb-1">ALTER</p>
-                    <p class="fs-5 fw-bold text-success mb-2">$217.990</p>
-                    
-                    <div class="mt-auto">
-                        <div class="badge-stock-info small mb-2 fw-semibold" data-id="alter-tokai-teio-horizon"></div>
-                        <button 
-                          class="btn btn-primary w-100 btn-agregar" 
-                          data-id="alter-tokai-teio-horizon" 
-                          data-nombre="ALTER [Beyond the Horizon] Tokai Teio 1/7" 
-                          data-precio="217990" 
-                          data-imagen="images/FiguraTeioAlt.jpg"
-                          style="background-color: #5b4b7a; border: none;">
-                          Añadir
+                <!-- Producto 5 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <article class="tarjeta-producto">
+                        <a href="detallesProducto.html?id=alter-tokai-teio-horizon" class="text-decoration-none text-dark">
+                            <img src="images/FiguraTeioAlt.jpg" alt="Figura de Tokai Teio" height="200">
+                            <h3 class="tarjeta-titulo">ALTER [Beyond the Horizon] Tokai Teio 1/7 Figure (Umamusume: Pretty Derby)</h3>
+                        </a>
+                        <p class="tarjeta-precio">$217.990</p>
+                        <button class="btn btn-primary btn-agregar" data-id="alter-tokai-teio-horizon" data-nombre="ALTER [Beyond the Horizon] Tokai Teio 1/7 Figure (Umamusume: Pretty Derby)" data-precio="217990" data-imagen="images/FiguraTeioAlt.jpg">
+                            Añadir
                         </button>
-                    </div>
+                    </article>
                 </div>
-            </div>
 
-            <!-- 6. POP UP PARADE Fine Motion L -->
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0 d-flex flex-column text-center p-3">
-                    <a href="detallesProducto.html?id=pop-up-parade-fine-motion-l" class="text-decoration-none text-dark">
-                        <img src="images/FigurFineMo.jpg" class="card-img-top img-fluid p-2" alt="POP UP PARADE Fine Motion L" style="height: 200px; object-fit: contain;">
-                        <h6 class="titulo-producto mt-2 fw-bold">POP UP PARADE Fine Motion L</h6>
-                    </a>
-                    <p class="text-muted small mb-1">Good Smile Company</p>
-                    <p class="fs-5 fw-bold text-success mb-2">$80.990</p>
-                    
-                    <div class="mt-auto">
-                        <div class="badge-stock-info small mb-2 fw-semibold" data-id="pop-up-parade-fine-motion-l"></div>
-                        <button 
-                          class="btn btn-primary w-100 btn-agregar" 
-                          data-id="pop-up-parade-fine-motion-l" 
-                          data-nombre="Good Smile Company POP UP PARADE Fine Motion L" 
-                          data-precio="80990" 
-                          data-imagen="images/FigurFineMo.jpg"
-                          style="background-color: #5b4b7a; border: none;">
-                          Añadir
+                <!-- Producto 6 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <article class="tarjeta-producto">
+                        <a href="detallesProducto.html?id=pop-up-parade-fine-motion-l" class="text-decoration-none text-dark">
+                            <img src="images/FigurFineMo.jpg" alt="Figura de Fine Motion" height="200">
+                            <h3 class="tarjeta-titulo">Good Smile Company POP UP PARADE Fine Motion L Size Figure (Umamusume: Pretty Derby)</h3>
+                        </a>
+                        <p class="tarjeta-precio">$80.990</p>
+                        <button class="btn btn-primary btn-agregar" data-id="pop-up-parade-fine-motion-l" data-nombre="Good Smile Company POP UP PARADE Fine Motion L Size Figure (Umamusume: Pretty Derby)" data-precio="80990" data-imagen="images/FigurFineMo.jpg">
+                            Añadir
                         </button>
-                    </div>
+                    </article>
                 </div>
-            </div>
 
-            <!-- 7. Phat! Calstone Light O -->
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0 d-flex flex-column text-center p-3">
-                    <a href="detallesProducto.html?id=phat-calstone-light-o" class="text-decoration-none text-dark">
-                        <img src="images/FigutaCalstone.jpg" class="card-img-top img-fluid p-2" alt="Phat! Calstone Light O" style="height: 200px; object-fit: contain;">
-                        <h6 class="titulo-producto mt-2 fw-bold">Phat! Calstone Light O 1/7</h6>
-                    </a>
-                    <p class="text-muted small mb-1">Phat! Company</p>
-                    <p class="fs-5 fw-bold text-success mb-2">$230.990</p>
-                    
-                    <div class="mt-auto">
-                        <div class="badge-stock-info small mb-2 fw-semibold" data-id="phat-calstone-light-o"></div>
-                        <button 
-                          class="btn btn-primary w-100 btn-agregar" 
-                          data-id="phat-calstone-light-o" 
-                          data-nombre="Phat! Calstone Light O 1/7 Figure" 
-                          data-precio="230990" 
-                          data-imagen="images/FigutaCalstone.jpg"
-                          style="background-color: #5b4b7a; border: none;">
-                          Añadir
+                <!-- Producto 7 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <article class="tarjeta-producto">
+                        <a href="detallesProducto.html?id=phat-calstone-light-o" class="text-decoration-none text-dark">
+                            <img src="images/FigutaCalstone.jpg" alt="Figura de Calstone Light O" height="200">
+                            <h3 class="tarjeta-titulo">Phat! Calstone Light O 1/7 Figure (Umamusume: Pretty Derby)</h3>
+                        </a>
+                        <p class="tarjeta-precio">$230.990</p>
+                        <button class="btn btn-primary btn-agregar" data-id="phat-calstone-light-o" data-nombre="Phat! Calstone Light O 1/7 Figure (Umamusume: Pretty Derby)" data-precio="230990" data-imagen="images/FigutaCalstone.jpg">
+                            Añadir
                         </button>
-                    </div>
+                    </article>
                 </div>
-            </div>
 
-            <!-- 8. Nendoroid Silence Suzuka -->
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0 d-flex flex-column text-center p-3">
-                    <a href="detallesProducto.html?id=nendoroid-silence-suzuka" class="text-decoration-none text-dark">
-                        <img src="images/SuzukaNen.jpg" class="card-img-top img-fluid p-2" alt="Nendoroid Silence Suzuka" style="height: 200px; object-fit: contain;">
-                        <h6 class="titulo-producto mt-2 fw-bold">Nendoroid Silence Suzuka</h6>
-                    </a>
-                    <p class="text-muted small mb-1">Good Smile Company</p>
-                    <p class="fs-5 fw-bold text-success mb-2">$63.990</p>
-                    
-                    <div class="mt-auto">
-                        <div class="badge-stock-info small mb-2 fw-semibold" data-id="nendoroid-silence-suzuka"></div>
-                        <button 
-                          class="btn btn-primary w-100 btn-agregar" 
-                          data-id="nendoroid-silence-suzuka" 
-                          data-nombre="Good Smile Company Nendoroid Silence Suzuka" 
-                          data-precio="63990" 
-                          data-imagen="images/SuzukaNen.jpg"
-                          style="background-color: #5b4b7a; border: none;">
-                          Añadir
+                <!-- Producto 8 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <article class="tarjeta-producto">
+                        <a href="detallesProducto.html?id=nendoroid-silence-suzuka" class="text-decoration-none text-dark">
+                            <img src="images/SuzukaNen.jpg" alt="Nendoroid de Silence Suzuka" height="200">
+                            <h3 class="tarjeta-titulo">Good Smile Company Nendoroid Silence Suzuka Figure (Umamusume: Pretty Derby)</h3>
+                        </a>
+                        <p class="tarjeta-precio">$63.990</p>
+                        <button class="btn btn-primary btn-agregar" data-id="nendoroid-silence-suzuka" data-nombre="Good Smile Company Nendoroid Silence Suzuka Figure (Umamusume: Pretty Derby)" data-precio="63990" data-imagen="images/SuzukaNen.jpg">
+                            Añadir
                         </button>
-                    </div>
+                    </article>
                 </div>
-            </div>
 
-        </div>
+            </div>
+        </section>
     </main>
 
-    <!-- Footer -->
     <footer> 
-        <h3>𐙚 MachanStore Team 2026:</h3>
-        <p>Kevin Pérez · Benjamín Tapia · William Zamorano</p>
+        <h3> 𐙚 MachanStore Team 2026: </h3>
+        <p> Kevin Perez </p>
+        <p> Benjamin Tapia </p>
+        <p> William Zamorano </p>
     </footer>
 
-    <!-- Bootstrap 5 JS Bundle y Scripts del Sitio -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/session.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    
+    <!-- Aquí puede ir la ruta de js de productos igual-->
+
     <script src="js/carrito.js"></script>
-    <script>
-        // Sincronización visual de stock en las tarjetas
-        document.addEventListener('DOMContentLoaded', () => {
-            const actualizarBadgesStock = () => {
-                const botones = document.querySelectorAll('.btn-agregar');
-                botones.forEach(boton => {
-                    const id = boton.dataset.id;
-                    const stock = obtenerStockProducto(id);
-                    const contenedorStock = document.querySelector(`.badge-stock-info[data-id="${id}"]`);
-
-                    if (stock <= 0) {
-                        if (contenedorStock) contenedorStock.innerHTML = '<span class="badge bg-danger">Agotado</span>';
-                        boton.disabled = true;
-                        boton.textContent = 'Sin Stock';
-                        boton.classList.remove('btn-primary');
-                        boton.classList.add('btn-secondary');
-                        boton.style.backgroundColor = '#6c757d';
-                    } else {
-                        if (contenedorStock) {
-                            contenedorStock.innerHTML = stock <= 3 
-                                ? `<span class="badge bg-warning text-dark">¡Últimas ${stock} unidades!</span>` 
-                                : `<span class="text-muted">Stock: <strong>${stock}</strong></span>`;
-                        }
-                        boton.disabled = false;
-                        boton.textContent = 'Añadir';
-                        boton.classList.add('btn-primary');
-                        boton.classList.remove('btn-secondary');
-                        boton.style.backgroundColor = '#5b4b7a';
-                    }
-                });
-            };
-
-            actualizarBadgesStock();
-        });
-    </script>
 </body>
 </html>
