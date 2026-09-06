@@ -17,7 +17,7 @@ const CATALOGO_DETALLE = [
         imagen: "images/DaiwaNen.webp",
         distribuidor: "Good Smile Company",
         categoria: "Nendoroid / Chibi",
-        descripcion: "¡La carismática y competitiva Daiwa Scarlet llega en formato Nendoroid! Incluye tres expresiones faciales intercambiables (sonriente, guiño y confiada) junto con accesorios de pista para recrear sus icónicas poses de carrera y victoria en la Academia Tracen."
+        descripcion: "¡Del juego 'Umamusume: Pretty Derby' llega una figura Nendoroid de Daiwa Scarlet, la Umamusume que siempre lucha por alcanzar el primer puesto! Incluye tres expresiones faciales: una sonrisa llena de energía, una expresión decidida que suele mostrar a sus rivales y una expresión lanzando un beso, inspirada en su actuación durante una de las canciones más populares del juego. Entre los accesorios opcionales se incluye una base Nendoroid de gran tamaño que imita el césped de una pista de carreras, así como una valla de la pista. ¡Diviértete recreando poses de competición con este estilo Nendoroid! ¡No dejes pasar la oportunidad de añadir a tu colección a Daiwa Scarlet, la Umamusume dispuesta a afrontar cualquier desafío para convertirse en la mejor! Figura articulada de plástico pintado, sin escala, con soporte incluido. Altura aproximada: 100 mm."
     },
     {
         id: "pop-up-parade-mihono-bourbon",
