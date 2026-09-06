@@ -286,3 +286,10 @@ footer {
     background-color: #f0f0f0;
     color: var(--morado) !important;
 }
+
+
+/* --- estilo para descripción de producto --- */
+
+#detalle-descripcion {
+    white-space: pre-line;
+}
