@@ -11,7 +11,7 @@
 
 <body> 
 
-    <header> 
+    <header>
         <nav class="navbar navbar-expand-lg navbar-dark menu-morado">
             <div class="container">
                 <a class="navbar-brand titulo-principal m-0" href="index.html">⋆｡‧˚ʚ MachanStore ɞ˚‧｡⋆</a>
@@ -25,7 +25,11 @@
                         <li class="nav-item"><a class="nav-link boton-menu" href="index.html">Inicio</a></li>
                         <li class="nav-item"><a class="nav-link boton-menu" href="productos.html">Productos</a></li>
                         <li class="nav-item"><a class="nav-link boton-menu" href="contacto.html">Contacto</a></li>
-                        <li class="nav-item"><a class="nav-link boton-menu" href="carrito.html">Carrito</a></li>
+                        <li class="nav-item">
+                        <a class="nav-link boton-menu active fw-bold" href="carrito.html">
+                            Carrito <span id="carrito-contador" class="badge rounded-pill bg-danger">0</span>
+                        </a>
+                    </li>
                         <li class="nav-item"><a class="nav-link boton-menu" href="login.html">Iniciar sesión</a></li>
                     </ul>
                 </div>
@@ -33,15 +37,16 @@
         </nav>
     </header>
 
+
     <main class="container my-5 text-center">
         <section class="seccion-nosotros">
             <h1>✧˖°. Quienes somos .°˖✧</h1>
             <br>
-            <p class="texto-nosotros"> En <strong>Lo quieres, te lo vendo</strong> entendemos la emoción de conseguir lo que buscas. Somos un grupo de jóvenes pride entusiastas de la compra y venta de articulos de toda clase.</p>
+            <p class="texto-nosotros"> En <strong>MachanStore</strong> entendemos la emoción de conseguir lo que buscas. Somos un grupo de jóvenes entusiastas de la compra y venta de articulos de toda clase.</p>
             <p class="texto-nosotros"> Ya sea que vengas buscando algo específico o simplemente quieras vitrinear, estás en el lugar indicado. Nos enfocamos principalmente en productos de Umamusume, trayendo todo tipo de mercancía. ฅ ฅ</p>
             <br>
 
-            <img src="images/CurrenPelona.jpg" alt="Figurita de Blade en un auto" width="339" height="226" class="img-fluid rounded shadow">
+            <img src="images/LogoMachan" alt="Logo de la tienda MachanStore" width="339" height="226" class="img-fluid rounded shadow">
         </section>
     </main>
 
@@ -52,7 +57,7 @@
         <p> William Zamorano </p>
     </footer>
   
-
+    <script src="js/carrito.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body> 
 </html>
