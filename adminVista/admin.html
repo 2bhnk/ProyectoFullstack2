@@ -5,33 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - MachanStore</title>
 
-    <!-- 🔒 BLOQUEO DE SEGURIDAD INMEDIATO -->
+    <!-- 🔒 Bloqueo de seguridad inmediato antes de renderizar la página -->
     <script>
         (function() {
             document.documentElement.style.display = 'none';
-
             let sesion = null;
-            try {
-                sesion = JSON.parse(localStorage.getItem('machan_sesion_activa'));
-            } catch (e) {
-                sesion = null;
-            }
+            try { sesion = JSON.parse(localStorage.getItem('machan_sesion_activa')); } catch (e) { sesion = null; }
 
-            // Si no hay sesión iniciada
             if (!sesion) {
                 alert('⚠️ Debes iniciar sesión para acceder al panel de administración.');
                 window.location.replace('../login.html');
                 return;
             }
-
-            // Si está logeado pero su rol no es admin
             if (sesion.rol !== 'admin') {
                 alert('⛔ Acceso denegado: Esta vista es exclusiva para administradores.');
                 window.location.replace('../index.html');
                 return;
             }
-
-            // Si es administrador, muestra la página
             document.documentElement.style.display = '';
         })();
     </script>
@@ -42,12 +32,11 @@
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
 
-    <!-- Encabezado / Navbar del Administrador -->
+    <!-- Encabezado / Navbar -->
     <header>
         <nav class="navbar navbar-expand-lg">
             <div class="container">
                 <a class="navbar-brand titulo-principal m-0" href="../index.html">⋆｡ · ˚ʚ MachanStore ɞ ˚· ｡⋆</a>
-
                 <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menuAdmin" aria-controls="menuAdmin" aria-expanded="false" aria-label="Abrir Menu">
                     <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
                 </button>
@@ -67,248 +56,225 @@
     </header>
 
     <!-- Contenido Principal -->
-    <main class="container my-5 flex-grow-1">
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
-            <div>
-                <h2 class="mb-1">⤷ Gestión de Inventario y Stock ˎˊ˗</h2>
-                <p class="text-muted small mb-0">Modifica las existencias de las figuras en tiempo real para el catálogo y carrito.</p>
-            </div>
-            <div>
-                <button id="btn-reiniciar-stock" class="btn btn-outline-secondary btn-sm">
-                    Restablecer Inventario Predeterminado
+    <main class="container my-4 flex-grow-1">
+
+        <!-- Pestañas de Navegación -->
+        <ul class="nav nav-pills mb-4 gap-2 border-bottom pb-3" id="adminTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="btn btn-sm active px-3 py-2 fw-semibold" id="tab-inventario-btn" data-bs-toggle="pill" data-bs-target="#tab-inventario" type="button" role="tab" style="border-radius: 8px;">
+                    📦 Inventario & Stock
                 </button>
-            </div>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="btn btn-sm btn-outline-secondary px-3 py-2 fw-semibold" id="tab-usuarios-btn" data-bs-toggle="pill" data-bs-target="#tab-usuarios" type="button" role="tab" style="border-radius: 8px;">
+                    👥 Gestión de Usuarios
+                </button>
+            </li>
+        </ul>
+
+        <!-- Alerta de Notificación Global -->
+        <div id="alerta-admin" class="alert alert-success alert-dismissible fade d-none" role="alert">
+            <span id="mensaje-alerta-admin">Acción realizada correctamente.</span>
+            <button type="button" class="btn-close" aria-label="Cerrar" onclick="document.getElementById('alerta-admin').classList.add('d-none')"></button>
         </div>
 
-        <!-- Tarjetas de Resumen de Inventario -->
-        <div class="row g-3 mb-4">
-            <div class="col-12 col-md-4">
-                <div class="card shadow-sm border-0 border-start border-4 border-primary p-3">
-                    <span class="text-muted small fw-bold">TOTAL DE FIGURAS</span>
-                    <h3 class="mb-0 fw-bold mt-1" id="stat-total-figuras">0</h3>
+        <div class="tab-content" id="adminTabsContent">
+            
+            <!-- PESTAÑA 1: INVENTARIO -->
+            <div class="tab-pane fade show active" id="tab-inventario" role="tabpanel">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h2 class="mb-1">⤷ Gestión de Inventario y Stock ˎˊ˗</h2>
+                        <p class="text-muted small mb-0">Modifica las existencias de las figuras en tiempo real para el catálogo y carrito.</p>
+                    </div>
+                    <div>
+                        <button id="btn-reiniciar-stock" class="btn btn-outline-secondary btn-sm">
+                            Restablecer Inventario Predeterminado
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="col-12 col-md-4">
-                <div class="card shadow-sm border-0 border-start border-4 border-warning p-3">
-                    <span class="text-muted small fw-bold">STOCK CRÍTICO (≤ 3 unidades)</span>
-                    <h3 class="mb-0 fw-bold text-warning mt-1" id="stat-stock-critico">0</h3>
-                </div>
-            </div>
-            <div class="col-12 col-md-4">
-                <div class="card shadow-sm border-0 border-start border-4 border-danger p-3">
-                    <span class="text-muted small fw-bold">AGOTADOS (0 unidades)</span>
-                    <h3 class="mb-0 fw-bold text-danger mt-1" id="stat-agotados">0</h3>
-                </div>
-            </div>
-        </div>
 
-        <!-- Alerta de Notificación de Cambios -->
-        <div id="alerta-stock" class="alert alert-success alert-dismissible fade d-none" role="alert">
-            <span id="mensaje-alerta-stock">Stock actualizado correctamente.</span>
-            <button type="button" class="btn-close" aria-label="Cerrar" onclick="document.getElementById('alerta-stock').classList.add('d-none')"></button>
-        </div>
+                <!-- Métricas Stock -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-4">
+                        <div class="card shadow-sm border-0 border-start border-4 border-primary p-3">
+                            <span class="text-muted small fw-bold">TOTAL DE FIGURAS</span>
+                            <h3 class="mb-0 fw-bold mt-1" id="stat-total-figuras">0</h3>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="card shadow-sm border-0 border-start border-4 border-warning p-3">
+                            <span class="text-muted small fw-bold">STOCK CRÍTICO (≤ 3 unidades)</span>
+                            <h3 class="mb-0 fw-bold text-warning mt-1" id="stat-stock-critico">0</h3>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="card shadow-sm border-0 border-start border-4 border-danger p-3">
+                            <span class="text-muted small fw-bold">AGOTADOS (0 unidades)</span>
+                            <h3 class="mb-0 fw-bold text-danger mt-1" id="stat-agotados">0</h3>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Tabla de Productos -->
-        <div class="table-responsive bg-white rounded shadow-sm border p-3">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th scope="col" style="min-width: 280px;">Figura</th>
-                        <th scope="col" class="text-center">Precio CLP</th>
-                        <th scope="col" class="text-center" style="min-width: 140px;">Stock Actual</th>
-                        <th scope="col" class="text-center">Estado</th>
-                        <th scope="col" class="text-center">Acción</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-admin-stock">
-                    <!-- Filas generadas dinámicamente -->
-                </tbody>
-            </table>
+                <!-- Tabla Stock -->
+                <div class="table-responsive bg-white rounded shadow-sm border p-3">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" style="min-width: 280px;">Figura</th>
+                                <th scope="col" class="text-center">Precio CLP</th>
+                                <th scope="col" class="text-center" style="min-width: 140px;">Stock Actual</th>
+                                <th scope="col" class="text-center">Estado</th>
+                                <th scope="col" class="text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-admin-stock"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PESTAÑA 2: USUARIOS -->
+            <div class="tab-pane fade" id="tab-usuarios" role="tabpanel">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h2 class="mb-1">⤷ Lista de Usuarios Registrados ˎˊ˗</h2>
+                        <p class="text-muted small mb-0">Visualiza, modifica roles, edita datos y gestiona los accesos a la plataforma.</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm text-white" style="background-color: #5b4b7a;" data-bs-toggle="modal" data-bs-target="#modalNuevoUsuario">
+                            + Crear Nuevo Usuario
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Métricas Usuarios -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-4">
+                        <div class="card shadow-sm border-0 border-start border-4 border-info p-3">
+                            <span class="text-muted small fw-bold">TOTAL REGISTRADOS</span>
+                            <h3 class="mb-0 fw-bold mt-1" id="stat-total-usuarios">0</h3>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="card shadow-sm border-0 border-start border-4 p-3" style="border-left-color: #5b4b7a !important;">
+                            <span class="text-muted small fw-bold">ADMINISTRADORES</span>
+                            <h3 class="mb-0 fw-bold mt-1" style="color: #5b4b7a;" id="stat-total-admins">0</h3>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="card shadow-sm border-0 border-start border-4 border-success p-3">
+                            <span class="text-muted small fw-bold">CLIENTES</span>
+                            <h3 class="mb-0 fw-bold text-success mt-1" id="stat-total-clientes">0</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla Usuarios -->
+                <div class="table-responsive bg-white rounded shadow-sm border p-3">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Correo Electrónico</th>
+                                <th scope="col" class="text-center">Rol</th>
+                                <th scope="col" class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-admin-usuarios"></tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </main>
 
+    <!-- MODAL: EDITAR USUARIO -->
+    <div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header text-white" style="background-color: #5b4b7a;">
+                    <h5 class="modal-title" id="modalEditarLabel">✏️ Modificar Usuario</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="formEditarUsuario">
+                    <div class="modal-body">
+                        <input type="hidden" id="edit-id">
+                        <div class="mb-3">
+                            <label for="edit-nombre" class="form-label fw-bold small">Nombre Completo:</label>
+                            <input type="text" class="form-control" id="edit-nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-email" class="form-label fw-bold small">Correo Electrónico:</label>
+                            <input type="email" class="form-control" id="edit-email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-password" class="form-label fw-bold small">Nueva Contraseña (dejar en blanco para mantener la actual):</label>
+                            <input type="text" class="form-control" id="edit-password" placeholder="Ingresa contraseña o déjalo vacío">
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-rol" class="form-label fw-bold small">Rol:</label>
+                            <select class="form-select" id="edit-rol">
+                                <option value="cliente">Cliente</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-sm text-white" style="background-color: #5b4b7a;">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: NUEVO USUARIO -->
+    <div class="modal fade" id="modalNuevoUsuario" tabindex="-1" aria-labelledby="modalNuevoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header text-white" style="background-color: #5b4b7a;">
+                    <h5 class="modal-title" id="modalNuevoLabel">👤 Crear Nuevo Usuario</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="formNuevoUsuario">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nuevo-nombre" class="form-label fw-bold small">Nombre Completo:</label>
+                            <input type="text" class="form-control" id="nuevo-nombre" placeholder="Ej: Marcela Soto" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nuevo-email" class="form-label fw-bold small">Correo Electrónico:</label>
+                            <input type="email" class="form-control" id="nuevo-email" placeholder="usuario@correo.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nuevo-password" class="form-label fw-bold small">Contraseña:</label>
+                            <input type="password" class="form-control" id="nuevo-password" placeholder="Mínimo 6 caracteres" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nuevo-rol" class="form-label fw-bold small">Rol:</label>
+                            <select class="form-select" id="nuevo-rol">
+                                <option value="cliente" selected>Cliente</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-sm text-white" style="background-color: #5b4b7a;">Crear Cuenta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer> 
-        <h3>𐙚 MachanStore Team 2026:</h3>
+        <h3>𐙚 ̊Ciber Equipo Pride 2026:</h3>
         <p>Kevin Pérez · Benjamín Tapia · William Zamorano</p>
     </footer>
 
-    <!-- Bootstrap 5 JS Bundle -->
+    <!-- Bootstrap 5 Bundle y Lógica Modular en admin.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Lógica de Administración y Stock -->
-    <script>
-        const CLAVE_INVENTARIO = 'machan_inventario';
-        const CLAVE_SESION = 'machan_sesion_activa';
-
-        // Catálogo base predeterminado de MachanStore
-        const PRODUCTOS_BASE = [
-            { id: "nendoroid-daiwa-scarlet", nombre: "Nendoroid Daiwa Scarlet", precio: 73990, stock: 8, imagen: "images/DaiwaNen.webp" },
-            { id: "pop-up-parade-mihono-bourbon", nombre: "POP UP PARADE SP Mihono Bourbon", precio: 65990, stock: 5, imagen: "images/FiguraBourbon.webp" },
-            { id: "pop-up-parade-daiwa-scarlet-l", nombre: "POP UP PARADE Daiwa Scarlet L Size", precio: 58990, stock: 6, imagen: "images/FiguraDaiwa.webp" },
-            { id: "pop-up-parade-machan-costume", nombre: "Aston Machan [Unforgettable Sugar Candy]", precio: 142990, stock: 3, imagen: "images/FiguraMachanCostume.webp" },
-            { id: "alter-tokai-teio-horizon", nombre: "ALTER Tokai Teio [Beyond the Horizon]", precio: 217990, stock: 2, imagen: "images/FiguraTeioAlt.jpg" },
-            { id: "pop-up-parade-fine-motion-l", nombre: "POP UP PARADE Fine Motion L Size", precio: 80990, stock: 4, imagen: "images/FigurFineMo.jpg" },
-            { id: "phat-calstone-light-o", nombre: "Phat! Calstone Light O 1/7", precio: 230990, stock: 3, imagen: "images/FigutaCalstone.jpg" },
-            { id: "nendoroid-silence-suzuka", nombre: "Nendoroid Silence Suzuka", precio: 63990, stock: 7, imagen: "images/SuzukaNen.jpg" }
-        ];
-
-        // Obtener inventario desde localStorage
-        const obtenerInventario = () => {
-            try {
-                const guardado = localStorage.getItem(CLAVE_INVENTARIO);
-                if (!guardado) {
-                    localStorage.setItem(CLAVE_INVENTARIO, JSON.stringify(PRODUCTOS_BASE));
-                    return PRODUCTOS_BASE;
-                }
-                return JSON.parse(guardado);
-            } catch (e) {
-                return PRODUCTOS_BASE;
-            }
-        };
-
-        // Guardar inventario actualizado
-        const guardarInventario = (inventario) => {
-            localStorage.setItem(CLAVE_INVENTARIO, JSON.stringify(inventario));
-        };
-
-        // Formateador de moneda CLP
-        const formatearPesos = (monto) => {
-            return new Intl.NumberFormat('es-CL', {
-                style: 'currency',
-                currency: 'CLP',
-                minimumFractionDigits: 0
-            }).format(monto);
-        };
-
-        // Mostrar alerta temporal
-        const mostrarAlerta = (mensaje, tipo = 'success') => {
-            const alerta = document.getElementById('alerta-stock');
-            const texto = document.getElementById('mensaje-alerta-stock');
-            if (alerta && texto) {
-                alerta.className = `alert alert-${tipo} alert-dismissible fade show`;
-                texto.textContent = mensaje;
-                setTimeout(() => {
-                    alerta.classList.add('d-none');
-                }, 3500);
-            }
-        };
-
-        // Actualizar tarjetas de métricas
-        const actualizarEstadisticas = (productos) => {
-            const totalEl = document.getElementById('stat-total-figuras');
-            const criticoEl = document.getElementById('stat-stock-critico');
-            const agotadosEl = document.getElementById('stat-agotados');
-
-            const total = productos.length;
-            const criticos = productos.filter(p => p.stock > 0 && p.stock <= 3).length;
-            const agotados = productos.filter(p => p.stock <= 0).length;
-
-            if (totalEl) totalEl.textContent = total;
-            if (criticoEl) criticoEl.textContent = criticos;
-            if (agotadosEl) agotadosEl.textContent = agotados;
-        };
-
-        // Dibujar tabla de productos
-        const renderizarTabla = () => {
-            const tbody = document.getElementById('tabla-admin-stock');
-            if (!tbody) return;
-
-            const productos = obtenerInventario();
-            tbody.innerHTML = '';
-
-            actualizarEstadisticas(productos);
-
-            productos.forEach(prod => {
-                const fila = document.createElement('tr');
-                const esAgotado = prod.stock <= 0;
-                const esCritico = prod.stock > 0 && prod.stock <= 3;
-
-                let estadoBadge = '<span class="badge bg-success">Disponible</span>';
-                if (esAgotado) {
-                    estadoBadge = '<span class="badge bg-danger">Agotado</span>';
-                } else if (esCritico) {
-                    estadoBadge = '<span class="badge bg-warning text-dark">Stock Bajo</span>';
-                }
-
-                fila.innerHTML = `
-                    <td class="align-middle">
-                        <div class="d-flex align-items-center">
-                            <img src="../${prod.imagen}" alt="${prod.nombre}" 
-                                 style="width: 52px; height: 52px; object-fit: contain; background-color: #f8f9fa;" 
-                                 class="me-3 rounded border p-1">
-                            <span class="fw-semibold">${prod.nombre}</span>
-                        </div>
-                    </td>
-                    <td class="text-center align-middle">${formatearPesos(prod.precio)}</td>
-                    <td class="text-center align-middle">
-                        <div class="input-group input-group-sm mx-auto" style="max-width: 120px;">
-                            <input type="number" min="0" class="form-control text-center fw-bold input-stock-valor" 
-                                   data-id="${prod.id}" value="${prod.stock}">
-                        </div>
-                    </td>
-                    <td class="text-center align-middle">${estadoBadge}</td>
-                    <td class="text-center align-middle">
-                        <button class="btn btn-sm text-white btn-guardar-stock" data-id="${prod.id}" 
-                                style="background-color: #5b4b7a;" title="Guardar cambios">
-                            Guardar
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(fila);
-            });
-        };
-
-        // Inicialización y eventos
-        document.addEventListener('DOMContentLoaded', () => {
-            // Mostrar nombre del admin logeado
-            try {
-                const sesion = JSON.parse(localStorage.getItem(CLAVE_SESION));
-                const userDisplay = document.getElementById('admin-user-display');
-                if (sesion && userDisplay) {
-                    userDisplay.textContent = `👤 ${sesion.nombre || 'Admin'}`;
-                }
-            } catch (e) {}
-
-            renderizarTabla();
-
-            // Delegación de eventos para guardar stock
-            document.getElementById('tabla-admin-stock')?.addEventListener('click', (e) => {
-                const btn = e.target.closest('.btn-guardar-stock');
-                if (btn) {
-                    const id = btn.dataset.id;
-                    const input = document.querySelector(`.input-stock-valor[data-id="${id}"]`);
-                    if (input) {
-                        const nuevoStock = Math.max(0, parseInt(input.value, 10) || 0);
-                        const inventario = obtenerInventario();
-                        const prod = inventario.find(p => p.id === id);
-
-                        if (prod) {
-                            prod.stock = nuevoStock;
-                            guardarInventario(inventario);
-                            renderizarTabla();
-                            mostrarAlerta(`✓ Stock de "${prod.nombre}" actualizado a ${nuevoStock} unidades.`);
-                        }
-                    }
-                }
-            });
-
-            // Restablecer catálogo
-            document.getElementById('btn-reiniciar-stock')?.addEventListener('click', () => {
-                if (confirm('¿Estás seguro de restablecer el inventario a sus valores por defecto?')) {
-                    guardarInventario(PRODUCTOS_BASE);
-                    renderizarTabla();
-                    mostrarAlerta('Inventario restablecido a los valores por defecto.', 'info');
-                }
-            });
-
-            // Botón cerrar sesión
-            document.getElementById('btn-admin-logout')?.addEventListener('click', () => {
-                localStorage.removeItem(CLAVE_SESION);
-                alert('Sesión cerrada correctamente.');
-                window.location.replace('../login.html');
-            });
-        });
-    </script>
+    <script src="../js/admin.js"></script>
 </body>
 </html>

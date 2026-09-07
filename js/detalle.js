@@ -1,14 +1,7 @@
-/**
- * js/detalle.js
- * Carga dinámica del producto por ID (?id=...),
- * lectura y sincronización del stock desde el inventario del administrador
- * y adición al carrito con control de existencias.
- */
-
 const CLAVE_CARRITO = 'carrito_tienda';
 const CLAVE_INVENTARIO = 'machan_inventario';
 
-// Catálogo con especificaciones extendidas
+// Catálogo con descripciones exactas modificadas
 const CATALOGO_DETALLE = [
     {
         id: "nendoroid-daiwa-scarlet",
@@ -94,7 +87,14 @@ const consultarStockDesdeStorage = (id) => {
             if (productoEncontrado) return productoEncontrado.stock;
         }
     } catch (e) {}
-    return 5; // Stock por defecto si no existiera
+    return 5;
+};
+
+// Notificación segura (Toasts)
+const alertarEnDetalle = (mensaje, tipo = 'danger') => {
+    if (typeof window.mostrarNotificacion === 'function') {
+        window.mostrarNotificacion(mensaje, tipo);
+    }
 };
 
 const formatearCLP = (monto) => {
@@ -116,18 +116,18 @@ const refrescarBadgeCarrito = () => {
 document.addEventListener('DOMContentLoaded', () => {
     refrescarBadgeCarrito();
 
-    // 1. Obtener ID de la figura desde la URL
+    // Obtener ID de la figura desde la URL
     const urlParams = new URLSearchParams(window.location.search);
     const productoId = urlParams.get('id');
 
-    // 2. Buscar datos del producto
+    // Buscar datos del producto
     const producto = CATALOGO_DETALLE.find(p => p.id === productoId) || CATALOGO_DETALLE[0];
     const stockReal = consultarStockDesdeStorage(producto.id);
 
-    // 3. Modificar título de pestaña
+    // Modificar título de pestaña
     document.title = `${producto.nombre} - MachanStore`;
 
-    // 4. Inyectar datos en el DOM
+    // Inyectar datos en el DOM
     const breadNombre = document.getElementById('bread-nombre-producto');
     const imgPrincipal = document.getElementById('detalle-imagen-principal');
     const txtNombre = document.getElementById('detalle-nombre');
@@ -146,7 +146,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (txtNombre) txtNombre.textContent = producto.nombre;
     if (txtPrecio) txtPrecio.textContent = formatearCLP(producto.precio);
-    if (txtDesc) txtDesc.textContent = producto.descripcion;
+    
+    // Se reemplaza \n por <br> para respetar los saltos de línea de la descripción
+    if (txtDesc) txtDesc.innerHTML = producto.descripcion.replace(/\n/g, '<br>');
+    
     if (txtProv) txtProv.textContent = producto.distribuidor;
     if (txtCat) txtCat.textContent = producto.categoria;
 
@@ -157,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.alt = producto.nombre;
     });
 
-    // 5. Configurar Stock y Bloquear Botón si está Agotado
+    // Configurar Stock y Bloquear Botón si está Agotado
     if (txtStock) {
         if (stockReal <= 0) {
             txtStock.textContent = 'Agotado';
@@ -183,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 6. Evento de Añadir al Carrito
+    // Evento de Añadir al Carrito
     if (btnAgregar && stockReal > 0) {
         btnAgregar.addEventListener('click', () => {
             const cantElegida = parseInt(inputCantidad.value, 10) || 1;
@@ -199,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const cantidadPrevia = itemExistente ? itemExistente.cantidad : 0;
 
             if (cantidadPrevia + cantElegida > stockReal) {
-                alert(`No puedes añadir esa cantidad. Ya tienes ${cantidadPrevia} en el carrito y el stock total es de ${stockReal}.`);
+                alertarEnDetalle(`No puedes añadir esa cantidad. Ya tienes ${cantidadPrevia} en el carrito y el stock total es de ${stockReal}.`, 'danger');
                 return;
             }
 
@@ -218,6 +221,8 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
             refrescarBadgeCarrito();
 
+            alertarEnDetalle(`¡Añadiste ${cantElegida} figura(s) al carrito!`, 'success');
+
             const textoOriginal = btnAgregar.textContent;
             btnAgregar.textContent = `¡Añadido (${cantElegida})! ✓`;
             btnAgregar.classList.add('opacity-75');
@@ -231,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 7. Productos Relacionados
+    // Productos Relacionados
     const contenedorRelacionados = document.getElementById('contenedor-relacionados');
     if (contenedorRelacionados) {
         const relacionados = CATALOGO_DETALLE.filter(p => p.id !== producto.id).slice(0, 4);

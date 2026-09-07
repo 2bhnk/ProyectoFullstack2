@@ -11,14 +11,13 @@ const inicializarUsuarios = () => {
                 nombre: 'Administrador Machan',
                 email: 'admin@machanstore.cl',
                 password: 'admin123',
-                rol: 'admin' // Rol para redirigir a adminVista
+                rol: 'admin'
             }
         ];
         localStorage.setItem(KEY_USUARIOS, JSON.stringify(usuarios));
     }
 };
 
-// Utilidades para mostrar/limpiar errores (siguiendo la pauta IE1.2.1)
 const mostrarError = (input, elementoError, texto) => {
     if (elementoError) {
         elementoError.textContent = texto;
@@ -69,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 mostrarError(email, errEmail, 'Ingresa un correo electrónico válido.');
                 return false;
             }
-            // Verificar si el correo ya existe
             const usuarios = JSON.parse(localStorage.getItem(KEY_USUARIOS)) || [];
             if (usuarios.some(u => u.email.toLowerCase() === email.value.trim().toLowerCase())) {
                 mostrarError(email, errEmail, 'Este correo ya se encuentra registrado.');
@@ -97,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return true;
         };
 
-        // Eventos en tiempo real
         nombre.addEventListener('blur', validarNombre);
         email.addEventListener('blur', validarEmail);
         pass.addEventListener('input', validarPass);
@@ -118,19 +115,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     nombre: nombre.value.trim(),
                     email: email.value.trim(),
                     password: pass.value,
-                    rol: 'cliente' // Nuevos registros son clientes normales
+                    rol: 'cliente'
                 };
 
                 usuarios.push(nuevoUsuario);
                 localStorage.setItem(KEY_USUARIOS, JSON.stringify(usuarios));
 
-                exito.textContent = '¡Cuenta creada con éxito! Redirigiendo a Iniciar Sesión...';
-                exito.style.display = 'block';
+                if (exito) {
+                    exito.textContent = '¡Cuenta creada con éxito! Redirigiendo a Iniciar Sesión...';
+                    exito.style.display = 'block';
+                }
+                if (typeof window.mostrarNotificacion === 'function') {
+                    window.mostrarNotificacion('¡Cuenta creada con éxito!', 'success');
+                }
                 formRegistro.reset();
 
                 setTimeout(() => {
                     window.location.href = 'login.html';
-                }, 1500);
+                }, 1400);
             }
         });
     }
@@ -148,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         formLogin.addEventListener('submit', (e) => {
             e.preventDefault();
-            errGlobal.style.display = 'none';
+            if (errGlobal) errGlobal.style.display = 'none';
 
             let valido = true;
             if (!email.value.trim()) {
@@ -173,20 +175,26 @@ document.addEventListener('DOMContentLoaded', () => {
             );
 
             if (usuarioEncontrado) {
-                // Guardar la sesión activa
                 localStorage.setItem(KEY_SESION, JSON.stringify(usuarioEncontrado));
-
-                // 🚀 REDIRECCIÓN SEGÚN ROL:
-                if (usuarioEncontrado.rol === 'admin') {
-                    // Si es administrador -> va a adminVista/admin.html
-                    window.location.href = 'adminVista/admin.html';
-                } else {
-                    // Si es cliente regular -> va a la tienda (index.html)
-                    window.location.href = 'index.html';
+                if (typeof window.mostrarNotificacion === 'function') {
+                    window.mostrarNotificacion(`¡Bienvenido de nuevo, ${usuarioEncontrado.nombre}!`, 'success');
                 }
+
+                setTimeout(() => {
+                    if (usuarioEncontrado.rol === 'admin') {
+                        window.location.href = 'adminVista/admin.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                }, 800);
             } else {
-                errGlobal.textContent = 'Correo o contraseña incorrectos. Intenta nuevamente.';
-                errGlobal.style.display = 'block';
+                if (errGlobal) {
+                    errGlobal.textContent = 'Correo o contraseña incorrectos. Intenta nuevamente.';
+                    errGlobal.style.display = 'block';
+                }
+                if (typeof window.mostrarNotificacion === 'function') {
+                    window.mostrarNotificacion('Credenciales incorrectas.', 'danger');
+                }
             }
         });
     }

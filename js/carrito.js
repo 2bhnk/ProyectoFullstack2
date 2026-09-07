@@ -1,12 +1,13 @@
-/**
- * js/carrito.js
- * Gestión completa del carrito de compras, cálculo de cupones de descuento,
- * validación reactiva de existencias y persistencia en localStorage.
- */
-
 const CLAVE_CARRITO = 'carrito_tienda';
 const CLAVE_CUPON = 'cupon_activo_tienda';
 const CLAVE_INVENTARIO = 'machan_inventario';
+
+// Helper de notificación segura
+const notificarUsuario = (mensaje, tipo = 'danger') => {
+    if (typeof window.mostrarNotificacion === 'function') {
+        window.mostrarNotificacion(mensaje, tipo);
+    }
+};
 
 // Catálogo base de inventario (por defecto si no ha sido inicializado en adminVista)
 const INVENTARIO_PREDETERMINADO = [
@@ -105,7 +106,7 @@ const agregarAlCarrito = (boton) => {
     const stockDisponible = obtenerStockProducto(id);
 
     if (stockDisponible <= 0) {
-        alert('Lo sentimos, este producto se encuentra agotado.');
+        notificarUsuario('Lo sentimos, este producto se encuentra agotado.', 'danger');
         return;
     }
 
@@ -114,7 +115,7 @@ const agregarAlCarrito = (boton) => {
 
     if (itemExistente) {
         if (itemExistente.cantidad >= stockDisponible) {
-            alert(`No puedes agregar más. Solo quedan ${stockDisponible} unidades disponibles de esta figura.`);
+            notificarUsuario(`No puedes agregar más. Solo quedan ${stockDisponible} unidades disponibles de esta figura.`, 'danger');
             return;
         }
         itemExistente.cantidad += 1;
@@ -123,6 +124,7 @@ const agregarAlCarrito = (boton) => {
     }
 
     guardarCarrito(carrito);
+    notificarUsuario(`"${nombre}" añadido al carrito.`, 'success');
 
     // Feedback visual en el botón
     const textoOriginal = boton.textContent;
@@ -145,7 +147,7 @@ const alterarCantidad = (id, incremento) => {
 
     if (producto) {
         if (incremento > 0 && producto.cantidad >= stockMaximo) {
-            alert(`Has alcanzado el límite máximo de existencias disponibles (${stockMaximo} unidades).`);
+            notificarUsuario(`Has alcanzado el límite máximo de existencias disponibles (${stockMaximo} unidades).`, 'danger');
             return;
         }
 
@@ -207,6 +209,7 @@ const procesarCodigoDescuento = () => {
         };
         mensajeCupon.textContent = '¡Descuento institucional del 20% aplicado con éxito!';
         mensajeCupon.className = 'small mt-2 text-success fw-semibold d-block';
+        notificarUsuario('Cupón Duoc UC (20%) aplicado correctamente.', 'success');
     } else if (valorMayus === 'PRIDE10' || valorMayus === 'PRIDE') {
         cuponAplicado = {
             codigo: 'PRIDE10',
@@ -215,9 +218,11 @@ const procesarCodigoDescuento = () => {
         };
         mensajeCupon.textContent = '¡Cupón Pride aplicado! Disfrutas de un 10% de descuento.';
         mensajeCupon.className = 'small mt-2 text-success fw-semibold d-block';
+        notificarUsuario('Cupón Pride (10%) aplicado correctamente.', 'success');
     } else {
         mensajeCupon.textContent = 'Código o correo no válido. Prueba con DUOC20 o tu correo @duocuc.cl.';
         mensajeCupon.className = 'small mt-2 text-danger fw-semibold d-block';
+        notificarUsuario('Código de descuento no válido.', 'danger');
         return;
     }
 
