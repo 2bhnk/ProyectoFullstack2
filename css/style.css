@@ -34,6 +34,11 @@ nav {
     font-style: italic;
 }
 
+.titulo-principal:hover,
+.titulo-principal:focus {
+    color: #000000;
+}
+
 header nav .boton-menu {
     display: inline-block;
     background-color: transparent;
@@ -172,12 +177,14 @@ footer {
 }
 
 .form-group,
-#formLogin .mb-3 {
+#formLogin .mb-3,
+#formRegistro .mb-3 {
     margin-bottom: 18px;
 }
 
 .form-group label,
-#formLogin label {
+#formLogin label,
+#formRegistro label {
     display: block;
     margin-bottom: 7px;
     font-weight: 700;
@@ -185,7 +192,8 @@ footer {
 
 .form-group input,
 .form-group textarea,
-#formLogin input {
+#formLogin input,
+#formRegistro input {
     width: 100%;
     border: 1px solid #cfc8dd;
     border-radius: 7px;
@@ -199,14 +207,16 @@ footer {
 
 .form-group input:focus,
 .form-group textarea:focus,
-#formLogin input:focus {
+#formLogin input:focus,
+#formRegistro input:focus {
     border-color: var(--morado-claro);
     box-shadow: 0 0 0 3px rgba(116, 97, 155, 0.15);
     outline: none;
 }
 
 #formContacto > button,
-#formLogin button {
+#formLogin button,
+#formRegistro button {
     width: 100%;
 }
 
@@ -237,6 +247,107 @@ footer {
   outline: none;
 }
 
+.inicio-contenido {
+    width: min(100% - 32px, 1180px);
+    margin: 28px auto 54px;
+}
+
+.bloque-presentacion {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+    gap: 28px;
+    align-items: center;
+    min-height: 250px;
+    padding: 14px 32px;
+    background: rgba(116, 97, 155, 0.18);
+    border: 2px solid #ffffff;
+}
+
+.presentacion-texto {
+    padding: 20px 0;
+}
+
+.presentacion-texto h1,
+.noticias-inicio h2,
+.noticia-inicio h3 {
+    margin: 0;
+    color: #101010;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.presentacion-texto h1 {
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    margin-bottom: 28px;
+}
+
+.presentacion-texto p {
+    max-width: 390px;
+    margin: 0 0 18px;
+    color: #171717;
+    line-height: 1.55;
+}
+
+.marco-imagen {
+    background: #ffffff;
+    border: 3px solid #ffffff;
+    box-shadow: inset 0 0 0 2px #777777;
+}
+
+.marco-imagen-presentacion {
+    min-height: 190px;
+}
+
+.marco-imagen-presentacion img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 184px;
+    object-fit: contain;
+}
+
+.noticias-inicio {
+    margin-top: 42px;
+}
+
+.noticias-inicio h2 {
+    margin: 0 0 30px 8px;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+}
+
+.noticias-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 38px;
+}
+
+.noticia-inicio {
+    padding: 16px 18px 22px;
+    background: rgba(116, 97, 155, 0.18);
+    border: 2px solid #ffffff;
+    text-align: center;
+}
+
+.marco-imagen-noticia {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    margin-bottom: 18px;
+}
+
+.marco-imagen-noticia img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #ffffff;
+}
+
+.noticia-inicio h3 {
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
+    line-height: 1.45;
+}
+
 @media (max-width: 575px) {
     nav {
         padding: 10px 0;
@@ -249,6 +360,31 @@ footer {
     #formContacto,
     #formLogin {
         padding: 20px;
+    }
+}
+
+@media (max-width: 700px) {
+    .inicio-contenido {
+        width: min(100% - 20px, 540px);
+        margin-top: 18px;
+    }
+
+    .bloque-presentacion,
+    .noticias-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bloque-presentacion {
+        gap: 8px;
+        padding: 12px 18px 18px;
+    }
+
+    .presentacion-texto h1 {
+        margin-bottom: 18px;
+    }
+
+    .noticias-grid {
+        gap: 22px;
     }
 }
 
@@ -292,4 +428,24 @@ footer {
 
 #detalle-descripcion {
     white-space: pre-line;
+}
+
+.breadcrumb-item a {
+    color: #ffffff !important;
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    color: #e4dff0 !important; /* Un morado muy clarito al pasar el mouse */
+    text-decoration: underline;
+}
+
+
+.breadcrumb-item.active {
+    color: #ffffff !important;
+}
+
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: #ffffff !important;
 }
