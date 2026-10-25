@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - MachanStore</title>
+
+    <!-- Bootstrap 5 y CSS personalizado -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Encabezado y Barra de Navegación -->
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand titulo-principal m-0" href="index.html">⋆｡ · ˚ʚ MachanStore ɞ ˚· ｡⋆</a>
+
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir Menu">
+                    <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="menu">
+                    <div class="navbar-nav ms-auto align-items-center">
+                        <a class="boton-menu" href="index.html">Inicio</a>
+                        <a class="boton-menu" href="productos.html">Productos</a>
+                        <a class="boton-menu" href="contacto.html">Contacto</a>
+                        <a class="boton-menu active" href="carrito.html">
+                            Carrito <span id="carrito-contador" class="badge rounded-pill bg-danger">0</span>
+                        </a>
+                        <a class="boton-menu" href="login.html">Iniciar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="container my-5 flex-grow-1">
+        <section id="seccion-carrito">
+            <h2 class="mb-4">⤷ Tu Carrito de Compras ˎˊ˗</h2>
+
+            <!-- Tabla de Productos -->
+            <div class="table-responsive shadow-sm rounded mb-4 bg-white border">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" style="min-width: 280px;">Producto</th>
+                            <th scope="col" class="text-center">Precio</th>
+                            <th scope="col" class="text-center" style="min-width: 140px;">Cantidad</th>
+                            <th scope="col" class="text-center">Subtotal</th>
+                            <th scope="col" class="text-center">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="carrito-items">
+                        <!-- Generado dinámicamente con JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Sección de Descuento y Resumen de Totales -->
+            <div class="row g-4">
+                <!-- Columna Izquierda: Código de Descuento y Navegación -->
+                <div class="col-12 col-lg-6">
+                    <div class="bg-white p-4 rounded border shadow-sm mb-3">
+                        <label for="input-cupon" class="form-label fw-bold">¿Tienes un código o correo de descuento?</label>
+                        <p class="small text-muted mb-2">Aplica tu cupón <strong>DUOC20</strong> o tu correo institucional (<strong>@duocuc.cl</strong>) para 20% de rebaja.</p>
+                        
+                        <div class="input-group">
+                            <input type="text" id="input-cupon" class="form-control" placeholder="Ej: DUOC20 o alumno@duocuc.cl" autocomplete="off">
+                            <button id="btn-aplicar-cupon" class="btn text-white" style="background-color: #5b4b7a;">Aplicar</button>
+                        </div>
+                        
+                        <!-- Mensajes de sugerencia y error contextuales -->
+                        <div id="mensaje-cupon" class="small mt-2" style="display: none;"></div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a href="productos.html" class="btn btn-outline-secondary">← Seguir Comprando</a>
+                        <button id="btn-vaciar" class="btn btn-outline-danger" disabled>Vaciar Carrito</button>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Desglose de Pago -->
+                <div class="col-12 col-lg-6">
+                    <div class="bg-white p-4 rounded border shadow-sm">
+                        <h5 class="mb-3 fw-bold">Resumen de tu Pedido</h5>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Subtotal:</span>
+                            <span id="carrito-subtotal" class="fw-semibold">$0</span>
+                        </div>
+
+                        <!-- Fila de Descuento -->
+                        <div id="fila-descuento" class="d-flex justify-content-between mb-2 d-none text-success">
+                            <span>Descuento aplicado (<span id="etiqueta-cupon"></span>):</span>
+                            <div>
+                                <span id="carrito-descuento" class="fw-bold">-$0</span>
+                                <button id="btn-quitar-cupon" class="btn btn-sm text-danger p-0 ms-2 text-decoration-underline" style="border: none; background: none;">(Quitar)</button>
+                            </div>
+                        </div>
+
+                        <hr class="my-2">
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="fs-5 fw-bold">Total Final:</span>
+                            <span id="carrito-total" class="fs-4 fw-bold text-success">$0</span>
+                        </div>
+
+                        <button id="btn-finalizar" class="btn btn-primary w-100 py-2 fw-bold" style="background-color: #5b4b7a; border: none;" disabled>
+                            Finalizar Compra
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notificación de compra exitosa -->
+            <div id="alerta-compra" class="alert alert-success mt-4 text-center d-none" role="alert">
+                ¡Gracias por tu compra! Tu pedido fue procesado exitosamente y el stock ha sido descontado del inventario.
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer> 
+        <h3>𐙚 MachanStore Team 2026:</h3>
+        <p>Kevin Pérez · Benjamín Tapia · William Zamorano</p>
+    </footer>
+
+    <!-- Bootstrap y Scripts del Carrito -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/session.js"></script>
+    <script src="js/carrito.js"></script>
+</body>
+</html>

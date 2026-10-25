@@ -1,0 +1,451 @@
+:root {
+    --morado-oscuro: #3d3454;
+    --morado: #5b4b7a;
+    --morado-claro: #74619b;
+    --texto: #2c2738;
+    --borde: #e4dff0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #fffbed 0%, #f4effb 100%);
+    color: var(--texto);
+    margin: 0;
+    min-height: 100vh;
+}
+
+main {
+    min-height: calc(100vh - 220px);
+}
+
+nav {
+    background-color: var(--morado-oscuro);
+    color: #ffffff;
+    padding: 14px 0;
+}
+
+.titulo-principal {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: clamp(1.4rem, 3vw, 2.1rem);
+    color: #ffffff;
+    font-style: italic;
+}
+
+.titulo-principal:hover,
+.titulo-principal:focus {
+    color: #000000;
+}
+
+header nav .boton-menu {
+    display: inline-block;
+    background-color: transparent;
+    color: #ffffff;
+    padding: 8px 12px;
+    margin: 0 3px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+header nav .boton-menu:hover,
+header nav .boton-menu:focus {
+    background-color: var(--morado-claro);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.texto-nosotros {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-width: 760px;
+    margin: 0 auto 12px;
+    padding: 0 15px;
+}
+
+.tarjeta-producto {
+    height: 100%;
+    padding: 20px;
+    margin: 0 auto 20px;
+    background-color: #ffffff;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(61, 52, 84, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.tarjeta-producto:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 26px rgba(61, 52, 84, 0.16);
+}
+
+.tarjeta-producto img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    margin: 0 auto 16px;
+    display: block;
+}
+
+.tarjeta-titulo {
+    min-height: 50px;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.tarjeta-precio {
+    color: var(--morado);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.btn-anadir,
+form button {
+    border: 0;
+    border-radius: 8px;
+    background-color: var(--morado);
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 700;
+    padding: 10px 20px;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-anadir:hover,
+form button:hover {
+    background-color: var(--morado-claro);
+    transform: translateY(-1px);
+}
+
+footer {
+    text-align: center;
+    padding: 24px 15px;
+    background-color: var(--morado-oscuro);
+    color: #ffffff;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.lista-contacto {
+    list-style-type: none; 
+    padding: 0;
+    max-width: 400px;
+    margin: 30px auto;
+    background-color: white;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(61, 52, 84, 0.08);
+}
+
+.lista-contacto li {
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0; 
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: var(--texto);
+}
+
+.lista-contacto li:last-child {
+    border-bottom: none;
+}
+
+#contacto {
+    max-width: 850px;
+    margin: 48px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+#formContacto,
+#formLogin,
+#formRegistro {
+    max-width: 560px;
+    margin: 28px auto 0;
+    padding: 28px;
+    background-color: #ffffff;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(61, 52, 84, 0.08);
+    text-align: left;
+}
+
+#formLogin {
+    margin-top: 0;
+}
+
+.form-group,
+#formLogin .mb-3,
+#formRegistro .mb-3 {
+    margin-bottom: 18px;
+}
+
+.form-group label,
+#formLogin label,
+#formRegistro label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 700;
+}
+
+.form-group input,
+.form-group textarea,
+#formLogin input,
+#formRegistro input {
+    width: 100%;
+    border: 1px solid #cfc8dd;
+    border-radius: 7px;
+    padding: 11px 12px;
+    font: inherit;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+#formLogin input:focus,
+#formRegistro input:focus {
+    border-color: var(--morado-claro);
+    box-shadow: 0 0 0 3px rgba(116, 97, 155, 0.15);
+    outline: none;
+}
+
+#formContacto > button,
+#formLogin button,
+#formRegistro button {
+    width: 100%;
+}
+
+/* Mensajes de error ocultos por defecto */
+.mensaje-error {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  display: none; /* No ocupa espacio hasta que haya error */
+  margin-top: 4px;
+}
+
+/* Mensaje de éxito oculto inicialmente */
+.mensaje-exito {
+  display: none;
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: 6px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Borde rojo cuando el campo no es válido */
+.input-invalido {
+  border: 2px solid #e74c3c !important;
+  outline: none;
+}
+
+.inicio-contenido {
+    width: min(100% - 32px, 1180px);
+    margin: 28px auto 54px;
+}
+
+.bloque-presentacion {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+    gap: 28px;
+    align-items: center;
+    min-height: 250px;
+    padding: 14px 32px;
+    background: rgba(116, 97, 155, 0.18);
+    border: 2px solid #ffffff;
+}
+
+.presentacion-texto {
+    padding: 20px 0;
+}
+
+.presentacion-texto h1,
+.noticias-inicio h2,
+.noticia-inicio h3 {
+    margin: 0;
+    color: #101010;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.presentacion-texto h1 {
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    margin-bottom: 28px;
+}
+
+.presentacion-texto p {
+    max-width: 390px;
+    margin: 0 0 18px;
+    color: #171717;
+    line-height: 1.55;
+}
+
+.marco-imagen {
+    background: #ffffff;
+    border: 3px solid #ffffff;
+    box-shadow: inset 0 0 0 2px #777777;
+}
+
+.marco-imagen-presentacion {
+    min-height: 190px;
+}
+
+.marco-imagen-presentacion img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 184px;
+    object-fit: contain;
+}
+
+.noticias-inicio {
+    margin-top: 42px;
+}
+
+.noticias-inicio h2 {
+    margin: 0 0 30px 8px;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+}
+
+.noticias-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 38px;
+}
+
+.noticia-inicio {
+    padding: 16px 18px 22px;
+    background: rgba(116, 97, 155, 0.18);
+    border: 2px solid #ffffff;
+    text-align: center;
+}
+
+.marco-imagen-noticia {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    margin-bottom: 18px;
+}
+
+.marco-imagen-noticia img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #ffffff;
+}
+
+.noticia-inicio h3 {
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
+    line-height: 1.45;
+}
+
+@media (max-width: 575px) {
+    nav {
+        padding: 10px 0;
+    }
+
+    .titulo-principal {
+        font-size: 1.25rem;
+    }
+
+    #formContacto,
+    #formLogin {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 700px) {
+    .inicio-contenido {
+        width: min(100% - 20px, 540px);
+        margin-top: 18px;
+    }
+
+    .bloque-presentacion,
+    .noticias-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bloque-presentacion {
+        gap: 8px;
+        padding: 12px 18px 18px;
+    }
+
+    .presentacion-texto h1 {
+        margin-bottom: 18px;
+    }
+
+    .noticias-grid {
+        gap: 22px;
+    }
+}
+
+/* ==========================================================
+   ESTILOS PERSONALIZADOS: MÓDULO CARRITO DE COMPRAS
+   ========================================================== */
+
+.img-carrito-figura {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  background-color: #f8f9fa;
+}
+
+/* Asegura texto blanco brillante en todos los enlaces del menú */
+.menu-morado .nav-link,
+.menu-morado .boton-menu {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Resalta el enlace activo sin oscurecer los demás */
+.menu-morado .nav-link.active {
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+/* --- ESTILOS EXTRA PARA EL SIDEBAR DEL ADMIN --- */
+.sidebar-link {
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.sidebar-link:hover {
+    background-color: #f0f0f0;
+    color: var(--morado) !important;
+}
+
+
+/* --- estilo para descripción de producto --- */
+
+#detalle-descripcion {
+    white-space: pre-line;
+}
+
+.breadcrumb-item a {
+    color: #ffffff !important;
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    color: #e4dff0 !important; /* Un morado muy clarito al pasar el mouse */
+    text-decoration: underline;
+}
+
+
+.breadcrumb-item.active {
+    color: #ffffff !important;
+}
+
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: #ffffff !important;
+}

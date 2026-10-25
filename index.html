@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda - Inicio</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="pagina-inicio"> 
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark menu-morado">
+            <div class="container">
+                <a class="navbar-brand titulo-principal m-0" href="index.html">⋆｡ · ˚ʚ MachanStore ɞ ˚· ｡⋆</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir Menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="menu">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link boton-menu" href="index.html">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link boton-menu" href="productos.html">Productos</a></li>
+                        <li class="nav-item"><a class="nav-link boton-menu" href="contacto.html">Contacto</a></li>
+                        <li class="nav-item">
+                        <a class="nav-link boton-menu active fw-bold" href="carrito.html">
+                            Carrito <span id="carrito-contador" class="badge rounded-pill bg-danger">0</span>
+                        </a>
+                    </li>
+                        <li class="nav-item"><a class="nav-link boton-menu" href="login.html">Iniciar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <main class="inicio-contenido">
+        <section class="bloque-presentacion" aria-labelledby="titulo-presentacion">
+            <div class="presentacion-texto">
+                <h1 id="titulo-presentacion">🥕 Sobre nosotros</h1>
+                <p>En <strong>MachanStore</strong> entendemos la emoción de conseguir lo que buscas.</p>
+                <p>Somos un grupo de jóvenes entusiastas de la compra y venta de artículos, especialmente de productos de Umamusume.</p>
+            </div>
+            <div class="marco-imagen marco-imagen-presentacion">
+                <img src="images/LogoMachan.png" alt="Logo de la tienda MachanStore">
+            </div>
+        </section>
+
+        <section class="noticias-inicio" aria-labelledby="titulo-noticias">
+            <h2 id="titulo-noticias">🥕 UmaNews 🥕</h2>
+            <div class="noticias-grid">
+                <article class="noticia-inicio">
+                    <div class="marco-imagen marco-imagen-noticia">
+                        <img src="images/RIPNakayamaFesta.webp" alt="Noticia sobre Nakayama Festa">
+                    </div>
+                    <h3>RIP Nakayama Festa</h3>
+                </article>
+                <article class="noticia-inicio">
+                    <div class="marco-imagen marco-imagen-noticia">
+                        <img src="images/BannerAstonMachan.jpg" alt="Nuevo banner de Aston Machan">
+                    </div>
+                    <h3>Nuevo banner de Aston Machan</h3>
+                </article>
+            </div>
+        </section>
+    </main>
+
+ <footer> 
+        <h3>𐙚 MachanStore Team 2026:</h3>
+        <p>Kevin Pérez · Benjamín Tapia · William Zamorano</p>
+    </footer>
+
+    <script src="js/session.js"></script>
+    <script src="js/carrito.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body> 
+</html>

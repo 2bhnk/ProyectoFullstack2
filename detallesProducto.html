@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Producto - MachanStore</title>
+    
+    <!-- Bootstrap 5 y CSS personalizado -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Encabezado y Navbar -->
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand titulo-principal m-0" href="index.html">⋆｡ · ˚ʚ MachanStore ɞ ˚· ｡⋆</a>
+
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir Menu">
+                    <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="menu">
+                    <div class="navbar-nav ms-auto align-items-center">
+                        <a class="boton-menu" href="index.html">Inicio</a>
+                        <a class="boton-menu" href="productos.html">Productos</a>
+                        <a class="boton-menu" href="contacto.html">Contacto</a>
+                        <a class="boton-menu" href="carrito.html">
+                            Carrito <span id="carrito-contador" class="badge rounded-pill bg-danger">0</span>
+                        </a>
+                        <a class="boton-menu" href="login.html">Iniciar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="container my-5 flex-grow-1">
+        <!-- Migas de Pan (Breadcrumb) -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html" class="text-decoration-none" style="color: #5b4b7a;">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="productos.html" class="text-decoration-none" style="color: #5b4b7a;">Productos</a></li>
+                <li class="breadcrumb-item active" aria-current="page" id="bread-nombre-producto">Cargando figura...</li>
+            </ol>
+        </nav>
+
+        <!-- Tarjeta de Detalle del Producto -->
+        <div class="card shadow-sm border-0 p-4 mb-5" id="detalle-producto">
+            <div class="row g-4">
+                <!-- Columna Izquierda: Galería e Imagen Principal -->
+                <div class="col-12 col-md-6 text-center">
+                    <div class="bg-white p-3 border rounded mb-3 d-flex align-items-center justify-content-center" style="min-height: 420px;">
+                        <img id="detalle-imagen-principal" src="" alt="" class="img-fluid" style="max-height: 390px; object-fit: contain;">
+                    </div>
+                    <div class="d-flex gap-2 justify-content-center cursor-pointer">
+                        <div class="border rounded p-1" style="width: 70px; height: 70px;">
+                            <img src="" alt="" class="img-fluid w-100 h-100" style="object-fit: contain;">
+                        </div>
+                        <div class="border rounded p-1" style="width: 70px; height: 70px;">
+                            <img src="" alt="" class="img-fluid w-100 h-100" style="object-fit: contain;">
+                        </div>
+                        <div class="border rounded p-1" style="width: 70px; height: 70px;">
+                            <img src="" alt="" class="img-fluid w-100 h-100" style="object-fit: contain;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Información y Acciones -->
+                <div class="col-12 col-md-6 d-flex flex-column">
+                    <span class="badge bg-secondary mb-2 align-self-start" id="detalle-categoria">Categoría</span>
+                    <h1 class="h2 fw-bold mb-2" id="detalle-nombre">Cargando nombre...</h1>
+                    
+                    <div class="mb-3">
+                        <span class="fs-2 fw-bold text-success" id="detalle-precio">$0</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <span class="badge bg-success" id="detalle-stock">Consultando stock...</span>
+                    </div>
+
+                    <p class="text-muted mb-4" id="detalle-descripcion" style="line-height: 1.6;">Cargando descripción...</p>
+
+                    <div class="bg-light p-3 rounded mb-4 border">
+                        <ul class="list-unstyled mb-0 small">
+                            <li class="mb-1"><strong>Fabricante / Distribuidor:</strong> <span id="detalle-proveedor">-</span></li>
+                            <li class="mb-1"><strong>Garantía:</strong> 3 meses por fallas de fábrica</li>
+                            <li><strong>Envío:</strong> Despacho a todo Chile por Starken y Correos</li>
+                        </ul>
+                    </div>
+
+                    <!-- Selector de Cantidad y Botón de Añadir -->
+                    <div class="mt-auto">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-4 col-sm-3">
+                                <label for="cantidad-producto" class="form-label small fw-bold">Cantidad:</label>
+                                <input type="number" id="cantidad-producto" class="form-control text-center fw-bold" value="1" min="1" max="10">
+                            </div>
+                            <div class="col-8 col-sm-9 d-flex align-items-end">
+                                <button id="btn-agregar-detalle" class="btn btn-primary w-100 py-2 fw-bold" style="background-color: #5b4b7a; border: none;">
+                                    Añadir al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección: Productos Relacionados -->
+        <section class="mt-5">
+            <h3 class="fw-bold mb-3">⤷ Figuras que te podrían interesar ˎˊ˗</h3>
+            <div class="row g-3" id="contenedor-relacionados"></div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer> 
+        <h3>𐙚 ̊Ciber Equipo Pride 2026:</h3>
+        <p>Kevin Pérez · Benjamín Tapia · William Zamorano</p>
+    </footer>
+
+    <!-- Bootstrap 5 y Scripts del Sistema -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/session.js"></script>
+    <script src="js/detalle.js"></script>
+</body>
+</html>
