@@ -431,21 +431,33 @@ footer {
 }
 
 .breadcrumb-item a {
-    color: #ffffff !important;
+    color: var(--morado) !important;
     text-decoration: none;
 }
 
 .breadcrumb-item a:hover {
-    color: #e4dff0 !important; /* Un morado muy clarito al pasar el mouse */
+    color: var(--morado-claro) !important;
     text-decoration: underline;
 }
 
-
 .breadcrumb-item.active {
+    color: var(--texto) !important;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: var(--morado) !important;
+}
+
+/* vista de detalle */
+.breadcrumb-claro .breadcrumb-item a {
     color: #ffffff !important;
 }
 
+.breadcrumb-claro .breadcrumb-item a:hover {
+    color: #f0f0f0 !important;
+    text-decoration: underline !important;
+}
 
-.breadcrumb-item + .breadcrumb-item::before {
-    color: #ffffff !important;
+.breadcrumb-claro .breadcrumb-item.active {
+    color: rgba(255, 255, 255, 0.7) !important;
 }
